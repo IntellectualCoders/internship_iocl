@@ -4,6 +4,8 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
+import TwitterIcon from '@material-ui/icons/Twitter';
+import TelegramIcon from '@material-ui/icons/Telegram';
 
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
@@ -17,6 +19,7 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+import WarningIcon from '@material-ui/icons/Warning';
 
 
 
@@ -24,7 +27,8 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     padding: '20px',
-    
+    maxHeight:"100vh",
+    position:"relative",
   },
   paper: {
     padding: theme.spacing(2),
@@ -34,15 +38,16 @@ const useStyles = makeStyles((theme) => ({
   },
   row:{
     width: "auto",
-    margin: "0px"
+    height: '100',
+    margin: "0px",
   },
   formControl: {
     margin: theme.spacing(1),
     minWidth: 240,
   },
   card:{
-   maxWidth:375,
-   marginTop:'10px'
+   maxWidth:500,
+   marginBottom:'20px'
   },
   title: {
     fontSize: 14,
@@ -51,11 +56,28 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 12,
   },
   disbutton:{
+    color: '#535349 !important',
     padding:'0px',
     margin:'5px',
     marginLeft:'0px',
-    paddingLeft:'3px',
-    paddingRight:'3px',
+    paddingLeft:'5px',
+    paddingRight:'5px',
+  },
+  button:{
+    paddingRight:'10px',
+    paddingLeft:'10px',
+    marginBottom:'10px',
+    marginLeft:'10px',
+  },
+  icon:{
+    float:"right",
+    color:"#3F51B5",
+  },
+  footer :{
+    flexShrink: 0,
+    textAlign: "center",
+    backgroundColor: "tomato",
+    color: "white",
   }
 }));
 
@@ -109,7 +131,7 @@ export default function CenteredGrid() {
     var link = `https://twitter.com/search?q=verified ${city} (`+ `${string}` + `) -"not verified" -"unverified"&f=live` ;
 
     return(
-      <Button color="primary" variant="contained" onClick={()=>{window.location.replace(link)}} size="small">Find Resources</Button>
+      <Button color="primary" className={classes.button} variant="contained" onClick={()=>{window.location.replace(link)}} size="small">Find Resources</Button>
     )
   }
 
@@ -157,14 +179,21 @@ export default function CenteredGrid() {
 
 
     return(
-      <Button color="primary" variant="contained" onClick={()=>{window.location.replace(telegramMap.get(state))}} size="small">Join the channel</Button>
+      <>
+      <Button color="primary" className={classes.button} variant="contained" onClick={()=>{window.location.replace(telegramMap.get(state))}} size="small">Join the channel</Button>
+      <Button color="primary" className={classes.button} style={{float:"right !important"}} variant="contained" onClick={()=>{window.location.replace(telegramMap.get("Tripura"))}} size="small">Join Sonu Sood's Channel</Button>
+      </>
     )
   }
 
   return (
     <div className={classes.root}>
       <Grid className={classes.row} container spacing={3}>
-        
+        <Grid item xs={12}>
+        <Typography variant="p" component="p" style={{color: "red", textAlign:"center"}}><WarningIcon style={{color:"red", fontSize:'30px'}}/>  Do <b>NOT</b> make advanced payments unless you are 100% sure about their authenticity.
+        <br/>
+         Check for replies under the tweets</Typography>
+         </Grid>
         <Grid item xs={12} md={4}>
           <Paper className={classes.root} elevation={3}>
         <FormControl variant="outlined" className={classes.formControl}>
@@ -355,11 +384,11 @@ export default function CenteredGrid() {
       </FormGroup>
       </Paper>
         </Grid>
-        <Grid item xs={12} md={8}>
-        <Card className={classes.card} variant="outlined">
+        <Grid item xs={12} md={4} >
+        <Card className={classes.card} elevation={3}>
       <CardContent>
         <Typography className={classes.title} color="textSecondary" gutterBottom>
-          Twitter
+          Twitter <TwitterIcon className={classes.icon}/>
         </Typography>
         <Typography variant="h5" component="h2">
           {state?state:'Delhi'}
@@ -390,10 +419,10 @@ export default function CenteredGrid() {
 
 
 
-    <Card className={classes.card} variant="outlined">
+    <Card className={classes.card} elevation={3}>
       <CardContent>
         <Typography className={classes.title} color="textSecondary" gutterBottom>
-          Telegram
+          Telegram <TelegramIcon className={classes.icon}/>
         </Typography>
         <Typography variant="h5" component="h2">
           {state?state:'Delhi'}
@@ -423,7 +452,14 @@ export default function CenteredGrid() {
     </Card>
 
         </Grid>
-        
+        <Grid xs={12} md={4}>
+         <Paper style={{marginTop:'10px'}}>
+           <img style={{width: '100%',borderRadius: '10px'}}src="https://www.humansupportgroup.co.uk/wp-content/uploads/2020/05/stay-home-save-lives-flyer-template-design-b5427054ab3b0e1697426c73ac656ffc_screen.jpg"/>
+           {/* <Typography variant="h5" component="h2">
+             TIPS
+           </Typography> */}
+         </Paper>
+        </Grid>
       </Grid>
     </div>
   );

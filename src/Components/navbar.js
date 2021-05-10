@@ -26,6 +26,7 @@ export default function Navbar() {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
+          <img src="https://img.icons8.com/bubbles/2x/coronavirus.png" style={{height:"50px", marginRight:"10px"}}></img>
           <Typography variant="h6" className={classes.title}>
             COVID-19 Resources
           </Typography>
