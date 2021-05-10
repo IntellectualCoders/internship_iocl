@@ -11,6 +11,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -18,9 +19,12 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 
 
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    padding: '20px',
+    
   },
   paper: {
     padding: theme.spacing(2),
@@ -38,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
   },
   card:{
    maxWidth:375,
+   marginTop:'10px'
   },
   title: {
     fontSize: 14,
@@ -45,11 +50,19 @@ const useStyles = makeStyles((theme) => ({
   pos: {
     marginBottom: 12,
   },
+  disbutton:{
+    padding:'0px',
+    margin:'5px',
+    marginLeft:'0px',
+    paddingLeft:'3px',
+    paddingRight:'3px',
+  }
 }));
 
 export default function CenteredGrid() {
 
-  const [state,setState]=useState("")
+  const [state,setState]=useState("Delhi");
+  const [city, setCity] =useState("Delhi");
   const [resource,setResource]=useState({
       oxygen: false,
       icubed: false,
@@ -58,18 +71,102 @@ export default function CenteredGrid() {
       vental : false,
       oxygenCylinder:false,
       oxygenConcentartor: false,
-      plasma:false
+      plasma:false,
+      bed:false,
+      favi:false,
+      toci:false,
+      food:false,
+      ambulance:false,
+      covidTest:false
   })
   const classes = useStyles();
   const handleChange = (event) => {
     setResource({ ...resource, [event.target.name]: event.target.checked });
   };
+  const TwitterLink = () =>{
+    var array=[];
+    
+    resource.oxygen?array.push('oxygen'):console.log('Do not worry we are here to HELP!!');
+    resource.oxygenbed?array.push('%23OxygenBed'):console.log('Do not worry we are here to HELP!!');
+    resource.oxygenCylinder?array.push('%23OxygenCylinder'):console.log('Do not worry we are here to HELP!!');
+    resource.oxygenConcentartor?array.push('%23OxygenConcentrator'):console.log('Do not worry we are here to HELP!!');
+    resource.rem?array.push('remdesivir'):console.log('Do not worry we are here to HELP!!');
+    resource.favi?array.push('favipiravir'):console.log('Do not worry we are here to HELP!!');
+    resource.toci?array.push('tocilizumab'):console.log('Do not worry we are here to HELP!!');
+    resource.plasma?array.push('plasma'):console.log('Do not worry we are here to HELP!!');
+    resource.food?array.push('food'):console.log('Do not worry we are here to HELP!!');
+    resource.icubed?array.push('icu'):console.log('Do not worry we are here to HELP!!');
+    resource.bed?array.push('bed'):console.log('Do not worry we are here to HELP!!');
+    resource.vental?array.push('ventilator'):console.log('Do not worry we are here to HELP!!');
+    resource.ambulance?array.push('ambulance'):console.log('Do not worry we are here to HELP!!');
+    resource.covidTest?array.push('%23CovidTest'):console.log('Do not worry we are here to HELP!!');
+
+    var string='';
+    array.map((a)=>{
+      string = string + a + ' OR ';
+    })
+
+    var link = `https://twitter.com/search?q=verified ${city} (`+ `${string}` + `) -"not verified" -"unverified"&f=live` ;
+
+    return(
+      <Button color="primary" variant="contained" onClick={()=>{window.location.replace(link)}} size="small">Find Resources</Button>
+    )
+  }
+
+  const TelegramLink = () =>{
+    
+    var telegramMap = new Map();
+    telegramMap.set("Delhi","https://t.me/CovidDelhiNCR");
+    telegramMap.set("Andhra Pradesh","https://t.me/apcovid19");
+    telegramMap.set("Andaman and Nicobar Islands","https://t.me/covidfyiAN");
+    telegramMap.set("Assam","https://t.me/IndiaFightsWithCovid");
+    telegramMap.set("Bihar","https://t.me/covidresourcesbiharsehai");
+    telegramMap.set("Chandigarh","https://t.me/chandigarhfightscovid");
+    telegramMap.set("Dadar and Nagar Haveli","https://t.me/IndiaFightsWithCovid");
+    telegramMap.set("Daman and Diu","https://t.me/covidfyiDD");
+    telegramMap.set("Tripura","https://t.me/IndiaFightsWithCovid");
+    telegramMap.set("Assam","https://t.me/covid19assamops");
+    telegramMap.set("Lakshadweep","https://t.me/covidfyiLD");
+    telegramMap.set("Arunachal Pradesh","https://t.me/covidjaankariarunachal");
+    telegramMap.set("West Bengal","https://t.me/Covid19Bengal");
+    telegramMap.set("Uttarakhand","https://t.me/covid19resourcesddun");
+    telegramMap.set("Uttar Pradesh","https://t.me/covidhelpUp");
+    telegramMap.set("Telangana","https://t.me/covidfyiTS");
+    telegramMap.set("Tamil Nadu","https://t.me/chennaicovidhelp");
+    telegramMap.set("Sikkim","https://t.me/covidfyiSK");
+    telegramMap.set("Puducherry","https://t.me/pycovid");
+    telegramMap.set("Goa","https://t.me/goasupermarket");
+    telegramMap.set("Rajasthan","https://t.me/helpjaipur");
+    telegramMap.set("Punjab","https://t.me/IndiaFightsWithCovid");
+    telegramMap.set("Odisha","https://t.me/IndiaFightsWithCovid");
+    telegramMap.set("Nagaland","https://t.me/IndiaFightsWithCovid");
+    telegramMap.set("Mizoram","https://t.me/covidfyiMZ");
+    telegramMap.set("Manipur","https://t.me/IndiaFightsWithCovid");
+    telegramMap.set("Meghalaya","https://t.me/IndiaFightsWithCovid");
+    telegramMap.set("Maharashtra","https://t.me/covidmaharashtra");
+    telegramMap.set("Madhya Pradesh","https://t.me/MadhyaPradeshFightswithCOVID");
+    telegramMap.set("Karnataka","https://t.me/karnataka_Covid19");
+    telegramMap.set("Jharkhand","https://t.me/COVIDforce");
+    telegramMap.set("Jammu and Kashmir","https://t.me/covid19jammusupport");
+    telegramMap.set("Himachal Pradesh","https://t.me/covidutttakhand");
+    telegramMap.set("Kerala","https://t.me/save_our_kerala");
+    telegramMap.set("Haryana","https://t.me/Haryana_Corona_Warriors");
+    telegramMap.set("Gujarat","https://t.me/covidhelpgujrat");
+    telegramMap.set("Ladakh","https://t.me/covidfyiLA");
+
+
+
+    return(
+      <Button color="primary" variant="contained" onClick={()=>{window.location.replace(telegramMap.get(state))}} size="small">Join the channel</Button>
+    )
+  }
 
   return (
     <div className={classes.root}>
       <Grid className={classes.row} container spacing={3}>
         
         <Grid item xs={12} md={4}>
+          <Paper className={classes.root} elevation={3}>
         <FormControl variant="outlined" className={classes.formControl}>
         <InputLabel id="demo-simple-select-outlined-label">State</InputLabel>
         <Select
@@ -79,15 +176,95 @@ export default function CenteredGrid() {
           onChange={(e)=>{setState(e.target.value)}}
           label="State"
         >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          <MenuItem value={'Delhi'}>Delhi</MenuItem>
-          <MenuItem value={'Mumbai'}>Mumbai</MenuItem>
-          <MenuItem value={'Goa'}>Goa</MenuItem>
+          
+          <MenuItem value="Andhra Pradesh">Andhra Pradesh</MenuItem>
+          <MenuItem value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</MenuItem>
+          <MenuItem value="Arunachal Pradesh">Arunachal Pradesh</MenuItem>
+          <MenuItem value="Assam">Assam</MenuItem>
+          <MenuItem value="Bihar">Bihar</MenuItem>
+          <MenuItem value="Chandigarh">Chandigarh</MenuItem>
+          <MenuItem value="Chhattisgarh">Chhattisgarh</MenuItem>
+          <MenuItem value="Dadar and Nagar Haveli">Dadar and Nagar Haveli</MenuItem>
+          <MenuItem value="Daman and Diu">Daman and Diu</MenuItem>
+          <MenuItem value="Delhi">Delhi</MenuItem>
+          <MenuItem value="Lakshadweep">Lakshadweep</MenuItem>
+          <MenuItem value="Puducherry">Puducherry</MenuItem>
+          <MenuItem value="Goa">Goa</MenuItem>
+          <MenuItem value="Gujarat">Gujarat</MenuItem>
+          <MenuItem value="Haryana">Haryana</MenuItem>
+          <MenuItem value="Himachal Pradesh">Himachal Pradesh</MenuItem>
+          <MenuItem value="Jammu and Kashmir">Jammu and Kashmir</MenuItem>
+          <MenuItem value="Ladakh">Ladakh</MenuItem>
+          <MenuItem value="Jharkhand">Jharkhand</MenuItem>
+          <MenuItem value="Karnataka">Karnataka</MenuItem>
+          <MenuItem value="Kerala">Kerala</MenuItem>
+          <MenuItem value="Madhya Pradesh">Madhya Pradesh</MenuItem>
+          <MenuItem value="Maharashtra">Maharashtra</MenuItem>
+          <MenuItem value="Manipur">Manipur</MenuItem>
+          <MenuItem value="Meghalaya">Meghalaya</MenuItem>
+          <MenuItem value="Mizoram">Mizoram</MenuItem>
+          <MenuItem value="Nagaland">Nagaland</MenuItem>
+          <MenuItem value="Odisha">Odisha</MenuItem>
+          <MenuItem value="Punjab">Punjab</MenuItem>
+          <MenuItem value="Rajasthan">Rajasthan</MenuItem>
+          <MenuItem value="Sikkim">Sikkim</MenuItem>
+          <MenuItem value="Tamil Nadu">Tamil Nadu</MenuItem>
+          <MenuItem value="Telangana">Telangana</MenuItem>
+          <MenuItem value="Tripura">Tripura</MenuItem>
+          <MenuItem value="Uttar Pradesh">Uttar Pradesh</MenuItem>
+          <MenuItem value="Uttarakhand">Uttarakhand</MenuItem>
+          <MenuItem value="West Bengal">West Bengal</MenuItem>
         </Select>
       </FormControl>
+      <FormControl className={classes.formControl}>
+      <TextField id="outlined-basic" label="City" variant="outlined" value={city} onChange={(e)=>setCity(e.target.value)} />
+      </FormControl>
+
       <FormGroup row>
+      <FormControlLabel
+        control={
+          <Checkbox
+            checked={resource.bed}
+            onChange={handleChange}
+            name="bed"
+            color="primary"
+          />
+        }
+        label="Bed"
+      />
+      <FormControlLabel
+        control={
+          <Checkbox
+            checked={resource.favi}
+            onChange={handleChange}
+            name="favi"
+            color="primary"
+          />
+        }
+        label="Favipiravir"
+      />
+      <FormControlLabel
+        control={
+          <Checkbox
+            checked={resource.toci}
+            onChange={handleChange}
+            name="toci"
+            color="primary"
+          />
+        }
+        label="Tocilizumab"
+      />
+      <FormControlLabel
+        control={
+          <Checkbox
+            checked={resource.food}
+            onChange={handleChange}
+            name="food"
+            color="primary"
+          />
+        }
+        label="Food"
+      />
       <FormControlLabel
         control={
           <Checkbox
@@ -153,10 +330,30 @@ export default function CenteredGrid() {
       }
       label="Ventilator"
     />
+    <FormControlLabel
+        control={
+          <Checkbox
+            checked={resource.ambulance}
+            onChange={handleChange}
+            name="ambulance"
+            color="primary"
+          />
+        }
+        label="Ambulance"
+      />
+      <FormControlLabel
+        control={
+          <Checkbox
+            checked={resource.covidTest}
+            onChange={handleChange}
+            name="covidTest"
+            color="primary"
+          />
+        }
+        label="COVID Test"
+      />
       </FormGroup>
-      <Button variant="contained" color="primary" onClick={()=>{console.log(resource,state)}}>
-        Search
-      </Button>
+      </Paper>
         </Grid>
         <Grid item xs={12} md={8}>
         <Card className={classes.card} variant="outlined">
@@ -168,22 +365,63 @@ export default function CenteredGrid() {
           {state?state:'Delhi'}
         </Typography>
         <Typography className={classes.pos} color="textSecondary">
-        {resource.vental===true?<Button variant="contained" disabled>Ventilator</Button>:''}
-        {resource.oxygen?<Button variant="contained" disabled>Oxygen</Button>:''}
-        {resource.oxygenbed?<Button variant="contained" disabled>Oxygen Bed</Button>:''}
-        {resource.oxygenConcentartor?<Button variant="contained" disabled>Oxygen Concentrator</Button>:''}
-
+        {resource.vental===true?<Button variant="contained" className={classes.disbutton} disabled>Ventilator</Button>:''}
+        {resource.icubed===true?<Button variant="contained" className={classes.disbutton} disabled>ICU Bed</Button>:''}
+        {resource.bed===true?<Button variant="contained" className={classes.disbutton} disabled>Bed</Button>:''}
+        {resource.rem===true?<Button variant="contained" className={classes.disbutton} disabled>Remdesivir</Button>:''}
+        {resource.favi===true?<Button variant="contained" className={classes.disbutton} disabled>Favipiravir</Button>:''}
+        {resource.toci===true?<Button variant="contained" className={classes.disbutton} disabled>Tocilizumab</Button>:''}
+        {resource.plasma===true?<Button variant="contained" className={classes.disbutton} disabled>Plasma</Button>:''}
+        {resource.food===true?<Button variant="contained" className={classes.disbutton} disabled>Food</Button>:''}
+        {resource.ambulance===true?<Button variant="contained" className={classes.disbutton} disabled>Ambulance</Button>:''}
+        {resource.covidTest===true?<Button variant="contained" className={classes.disbutton} disabled>COVID Test</Button>:''}
+        {resource.oxygen?<Button variant="contained" className={classes.disbutton} disabled>Oxygen</Button>:''}
+        {resource.oxygenbed?<Button variant="contained" className={classes.disbutton} disabled>Oxygen Bed</Button>:''}
+        {resource.oxygenConcentartor?<Button variant="contained" className={classes.disbutton} disabled>Oxygen Concentrator</Button>:''}
+        {resource.oxygenCylinder?<Button variant="contained" className={classes.disbutton} disabled>Oxygen Cylinder</Button>:''}
         </Typography>
-        <Typography variant="body2" component="p">
-          well meaning and kindly.
-          <br />
-          {'"a benevolent smile"'}
-        </Typography>
+        
       </CardContent>
       <CardActions>
-        <Button size="small">Find Resources</Button>
+        <TwitterLink />
+        
       </CardActions>
     </Card>
+
+
+
+    <Card className={classes.card} variant="outlined">
+      <CardContent>
+        <Typography className={classes.title} color="textSecondary" gutterBottom>
+          Telegram
+        </Typography>
+        <Typography variant="h5" component="h2">
+          {state?state:'Delhi'}
+        </Typography>
+        <Typography className={classes.pos} color="textSecondary">
+        {resource.vental===true?<Button variant="contained" className={classes.disbutton} disabled>Ventilator</Button>:''}
+        {resource.icubed===true?<Button variant="contained" className={classes.disbutton} disabled>ICU Bed</Button>:''}
+        {resource.bed===true?<Button variant="contained" className={classes.disbutton} disabled>Bed</Button>:''}
+        {resource.rem===true?<Button variant="contained" className={classes.disbutton} disabled>Remdesivir</Button>:''}
+        {resource.favi===true?<Button variant="contained" className={classes.disbutton} disabled>Favipiravir</Button>:''}
+        {resource.toci===true?<Button variant="contained" className={classes.disbutton} disabled>Tocilizumab</Button>:''}
+        {resource.plasma===true?<Button variant="contained" className={classes.disbutton} disabled>Plasma</Button>:''}
+        {resource.food===true?<Button variant="contained" className={classes.disbutton} disabled>Food</Button>:''}
+        {resource.ambulance===true?<Button variant="contained" className={classes.disbutton} disabled>Ambulance</Button>:''}
+        {resource.covidTest===true?<Button variant="contained" className={classes.disbutton} disabled>COVID Test</Button>:''}
+        {resource.oxygen?<Button variant="contained" className={classes.disbutton} disabled>Oxygen</Button>:''}
+        {resource.oxygenbed?<Button variant="contained" className={classes.disbutton} disabled>Oxygen Bed</Button>:''}
+        {resource.oxygenConcentartor?<Button variant="contained" className={classes.disbutton} disabled>Oxygen Concentrator</Button>:''}
+        {resource.oxygenCylinder?<Button variant="contained" className={classes.disbutton} disabled>Oxygen Cylinder</Button>:''}
+        </Typography>
+        
+      </CardContent>
+      <CardActions>
+        <TelegramLink />
+        
+      </CardActions>
+    </Card>
+
         </Grid>
         
       </Grid>
