@@ -98,23 +98,24 @@ const useStyles = makeStyles((theme) => ({
     // const[bool,setBool]=useState( states ? true : false );
   const[findbypin,setFindbypin]=useState([]);
  async  function apicall(){
-  const res = await axios.get(`https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=${pincode}&date=12-05-2021`)
+  const res = await axios.get(`https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=${pincode}&date=12-05-2021`)
   .then(
         res=>{
-setFindbypin(res.data.sessions);
+setFindbypin(res.data.centers);
 console.log(res);
-console.log(res.data.sessions);
+console.log(res.data.centers);
         }
   )
 }
     useEffect( ()=>{
       const fetchapi = async () =>{
-        const res = await axios.get(`https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=${pincode}&date=12-05-2021`)
+        //https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=110001&date=31-03-2021
+        const res = await axios.get(`https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=${pincode}&date=12-05-2021`)
         .then(
               res=>{
-setFindbypin(res.data.sessions);
+setFindbypin(res.data.centers);
 console.log(res);
-console.log(res.data.sessions);
+console.log(res.data.centers);
               }
         )
       }
@@ -190,7 +191,7 @@ console.log(res.data.sessions);
       <FormControl className={classes.formControl}>
       <TextField id="outlined-basic" label="Enter Pin" variant="outlined" value={pincode} onChange={(e)=>setPincode(e.target.value)} />
       </FormControl>
-      <Button onClick={apicall()}>Search by pincode</Button>
+      <Button onClick={()=>{apicall()}}>Search by pincode</Button>
      
       </Paper>
         </Grid>
