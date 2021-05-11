@@ -21,6 +21,8 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import WarningIcon from '@material-ui/icons/Warning';
 
+import BottomNavigation from '@material-ui/core/BottomNavigation';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -28,7 +30,6 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     padding: '20px',
     maxHeight:"100vh",
-    position:"relative",
   },
   paper: {
     padding: theme.spacing(2),
@@ -74,10 +75,14 @@ const useStyles = makeStyles((theme) => ({
     color:"#3F51B5",
   },
   footer :{
-    flexShrink: 0,
-    textAlign: "center",
-    backgroundColor: "tomato",
-    color: "white",
+    width: '100%',
+    backgroundColor:'#3F51B5',
+    padding:'0px !important',
+    marginLeft:'-20px',
+    marginTop:'20px',
+    marginBottom:'-20px',
+    width:'100vw !important'
+
   }
 }));
 
@@ -187,10 +192,12 @@ export default function CenteredGrid() {
   }
 
   return (
+    <>
     <div className={classes.root}>
       <Grid className={classes.row} container spacing={3}>
         <Grid item xs={12}>
-        <Typography variant="p" component="p" style={{color: "red", textAlign:"center"}}><WarningIcon style={{color:"red", fontSize:'30px'}}/>  Do <b>NOT</b> make advanced payments unless you are 100% sure about their authenticity.
+        <Typography variant="p" component="p" style={{color: "red", textAlign:"center"}}><WarningIcon style={{color:"red", fontSize:'30px'}}/></Typography>
+        <Typography variant="p" component="p" style={{color: "red", textAlign:"center"}}>Do <b>NOT</b> make advanced payments unless you are 100% sure about their authenticity.
         <br/>
          Check for replies under the tweets</Typography>
          </Grid>
@@ -455,12 +462,20 @@ export default function CenteredGrid() {
         <Grid xs={12} md={4}>
          <Paper style={{marginTop:'10px'}}>
            <img style={{width: '100%',borderRadius: '10px'}}src="https://www.humansupportgroup.co.uk/wp-content/uploads/2020/05/stay-home-save-lives-flyer-template-design-b5427054ab3b0e1697426c73ac656ffc_screen.jpg"/>
-           {/* <Typography variant="h5" component="h2">
-             TIPS
-           </Typography> */}
+           
          </Paper>
         </Grid>
       </Grid>
+      <BottomNavigation
+      showLabels
+      className={classes.footer}
+    >
+      <Typography style={{color:"white",marginTop:"10px"}}>
+    Made with <FavoriteIcon style={{color:"red"}}/> by <a href="https://github.com/IntellectualCoders" style={{color:"white"}}> Intellectual Coders</a>
+    </Typography>
+     </BottomNavigation>
     </div>
+    
+    </>
   );
 }
