@@ -104,7 +104,8 @@ export default function CenteredGrid() {
       toci:false,
       food:false,
       ambulance:false,
-      covidTest:false
+      covidTest:false,
+      fabi: false
   })
   const classes = useStyles();
   const handleChange = (event) => {
@@ -113,21 +114,21 @@ export default function CenteredGrid() {
   const TwitterLink = () =>{
     var array=[];
     
-    resource.oxygen?array.push('oxygen'):console.log('Do not worry we are here to HELP!!');
-    resource.oxygenbed?array.push('%23OxygenBed'):console.log('Do not worry we are here to HELP!!');
-    resource.oxygenCylinder?array.push('%23OxygenCylinder'):console.log('Do not worry we are here to HELP!!');
-    resource.oxygenConcentartor?array.push('%23OxygenConcentrator'):console.log('Do not worry we are here to HELP!!');
-    resource.rem?array.push('remdesivir'):console.log('Do not worry we are here to HELP!!');
-    resource.favi?array.push('favipiravir'):console.log('Do not worry we are here to HELP!!');
-    resource.toci?array.push('tocilizumab'):console.log('Do not worry we are here to HELP!!');
-    resource.plasma?array.push('plasma'):console.log('Do not worry we are here to HELP!!');
-    resource.food?array.push('food'):console.log('Do not worry we are here to HELP!!');
-    resource.icubed?array.push('icu'):console.log('Do not worry we are here to HELP!!');
-    resource.bed?array.push('bed'):console.log('Do not worry we are here to HELP!!');
-    resource.vental?array.push('ventilator'):console.log('Do not worry we are here to HELP!!');
-    resource.ambulance?array.push('ambulance'):console.log('Do not worry we are here to HELP!!');
-    resource.covidTest?array.push('%23CovidTest'):console.log('Do not worry we are here to HELP!!');
-
+    resource.oxygen?array.push('%23oxygen%20OR%20oxygen%20'):console.log('Do not worry we are here to HELP!!');
+    resource.oxygenbed?array.push('%23OxygenBed%20OR%20OxygenBed%20'):console.log('Do not worry we are here to HELP!!');
+    resource.oxygenCylinder?array.push('%23OxygenCylinder%20OR%20OxygenCylinder%20'):console.log('Do not worry we are here to HELP!!');
+    resource.oxygenConcentartor?array.push('%23OxygenConcentrator%20OR%20OxygenConcentrator%20'):console.log('Do not worry we are here to HELP!!');
+    resource.rem?array.push('%23remdesivir%20OR%20remdesivir%20'):console.log('Do not worry we are here to HELP!!');
+    resource.favi?array.push('%23favipiravir%20OR%20favipiravir%20'):console.log('Do not worry we are here to HELP!!');
+    resource.toci?array.push('%23tocilizumab%20OR%20tocilizumab%20'):console.log('Do not worry we are here to HELP!!');
+    resource.plasma?array.push('%23plasma%20OR%20plasma%20'):console.log('Do not worry we are here to HELP!!');
+    resource.food?array.push('%23food%20OR%20food%20'):console.log('Do not worry we are here to HELP!!');
+    resource.icubed?array.push('%23icu%20OR%20icu%20'):console.log('Do not worry we are here to HELP!!');
+    resource.bed?array.push('%23bed%20OR%20bed%20'):console.log('Do not worry we are here to HELP!!');
+    resource.vental?array.push('%23ventilator%20OR%20ventilator%20'):console.log('Do not worry we are here to HELP!!');
+    resource.ambulance?array.push('%23ambulance%20OR%20ambulance%20'):console.log('Do not worry we are here to HELP!!');
+    resource.covidTest?array.push('%23CovidTest%20OR%20CovidTest%20'):console.log('Do not worry we are here to HELP!!');
+    resource.fabi?array.push('%23fabiflu%20OR%20fabiflu%20'):console.log('Do not worry we are here to HELP!!');
     var string='';
     array.map((a)=>{
       string = string + a + ' OR ';
@@ -388,6 +389,17 @@ export default function CenteredGrid() {
         }
         label="COVID Test"
       />
+      <FormControlLabel
+        control={
+          <Checkbox
+            checked={resource.fabi}
+            onChange={handleChange}
+            name="fabi"
+            color="primary"
+          />
+        }
+        label="Fabiflu"
+      />
       </FormGroup>
       </Paper>
         </Grid>
@@ -415,6 +427,7 @@ export default function CenteredGrid() {
         {resource.oxygenbed?<Button variant="contained" className={classes.disbutton} disabled>Oxygen Bed</Button>:''}
         {resource.oxygenConcentartor?<Button variant="contained" className={classes.disbutton} disabled>Oxygen Concentrator</Button>:''}
         {resource.oxygenCylinder?<Button variant="contained" className={classes.disbutton} disabled>Oxygen Cylinder</Button>:''}
+        {resource.fabi?<Button variant="contained" className={classes.disbutton} disabled>Fabiflu</Button>:''}
         </Typography>
         
       </CardContent>
@@ -449,6 +462,7 @@ export default function CenteredGrid() {
         {resource.oxygenbed?<Button variant="contained" className={classes.disbutton} disabled>Oxygen Bed</Button>:''}
         {resource.oxygenConcentartor?<Button variant="contained" className={classes.disbutton} disabled>Oxygen Concentrator</Button>:''}
         {resource.oxygenCylinder?<Button variant="contained" className={classes.disbutton} disabled>Oxygen Cylinder</Button>:''}
+        {resource.fabi?<Button variant="contained" className={classes.disbutton} disabled>Fabiflu</Button>:''}
         </Typography>
         
       </CardContent>
@@ -471,7 +485,7 @@ export default function CenteredGrid() {
       className={classes.footer}
     >
       <Typography style={{color:"white",marginTop:"10px"}}>
-    Made with <FavoriteIcon style={{color:"red"}}/> by <a href="https://github.com/IntellectualCoders" style={{color:"white"}}> Intellectual Coders</a>
+    Made with <FavoriteIcon style={{color:"red"}}/> by <a href="https://github.com/IntellectualCoders" style={{color:"white"}}> Intellectual Coders  </a>
     </Typography>
      </BottomNavigation>
     </div>
