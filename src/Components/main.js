@@ -136,7 +136,7 @@ export default function CenteredGrid() {
     var link = `https://twitter.com/search?q=verified ${city} (`+ `${string}` + `) -"not verified" -"unverified"&f=live` ;
 
     return(
-      <Button color="primary" className={classes.button} variant="contained" onClick={()=>{window.location.replace(link)}} size="small">Find Resources</Button>
+      <Button color="primary" className={classes.button} variant="contained" onClick={()=>{window.open(link)}} size="small">Find Resources</Button>
     )
   }
 
@@ -185,8 +185,8 @@ export default function CenteredGrid() {
 
     return(
       <>
-      <Button color="primary" className={classes.button} variant="contained" onClick={()=>{window.location.replace(telegramMap.get(state))}} size="small">Join the channel</Button>
-      <Button color="primary" className={classes.button} style={{float:"right !important"}} variant="contained" onClick={()=>{window.location.replace(telegramMap.get("Tripura"))}} size="small">Join Sonu Sood's Channel</Button>
+      <Button color="primary" className={classes.button} variant="contained" onClick={()=>{window.open(telegramMap.get(state))}} size="small">Join the channel</Button>
+      <Button color="primary" className={classes.button} style={{float:"right !important"}} variant="contained" onClick={()=>{window.open(telegramMap.get("Tripura"))}} size="small">Join Sonu Sood's Channel</Button>
       </>
     )
   }
