@@ -485,7 +485,7 @@ export default function CenteredGrid() {
       className={classes.footer}
     >
       <Typography style={{color:"white",marginTop:"10px"}}>
-    Made with <FavoriteIcon style={{color:"red"}}/> by <a href="https://github.com/IntellectualCoders" style={{color:"white"}}> Intellectual Coders  </a>
+    Made with <FavoriteIcon style={{color:"red"}}/> by <a href="https://github.com/IntellectualCoders" style={{color:"white"}}> INTELLECTUAL CODERS  </a>
     </Typography>
      </BottomNavigation>
     </div>
