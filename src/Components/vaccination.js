@@ -178,11 +178,12 @@ function Row(props) {
 
   const[hospitals,setHospitals]=useState([]);
   const [currhospital,setCurrHospital] = useState(null);
+  const [todayDate, setTodayDate] = useState(null);
 
 
     async  function searchByPincode(){
       const res = await axios
-      .get(`https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=${pincode}&date=12-05-2021`)
+      .get(`https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=${pincode}&date=${todayDate}`)
       .then(
             res=>{
               setHospitals(res.data.centers);
@@ -194,8 +195,23 @@ function Row(props) {
 
     useEffect( ()=>{
       const fetchapi = async () =>{
+        var today = new Date();
+        var dd = today.getDate();
+
+        var mm = today.getMonth()+1; 
+        var yyyy = today.getFullYear();
+        if(dd<10) 
+        {
+            dd='0'+dd;
+        } 
+
+        if(mm<10) 
+        {
+            mm='0'+mm;
+        } 
+        today = dd+'-'+mm+'-'+yyyy;
         const res = await axios
-        .get(`https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=${pincode}&date=12-05-2021`)
+        .get(`https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=${pincode}&date=${today}`)
         .then(
               res=>{
               setHospitals(res.data.centers);
@@ -204,6 +220,25 @@ function Row(props) {
               }
         )
       }
+
+      var today = new Date();
+      var dd = today.getDate();
+
+      var mm = today.getMonth()+1; 
+      var yyyy = today.getFullYear();
+      if(dd<10) 
+      {
+          dd='0'+dd;
+      } 
+
+      if(mm<10) 
+      {
+          mm='0'+mm;
+      } 
+      today = dd+'-'+mm+'-'+yyyy;
+      setTodayDate(today);
+
+
       fetchapi();
       
     },[]);
