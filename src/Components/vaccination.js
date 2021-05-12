@@ -129,7 +129,7 @@ function Row(props) {
         <TableCell align="right">{row.min_age_limit}</TableCell>
         {row.available_capacity<30?
         <TableCell align="right" style={{color:"red"}}> <b>{row.available_capacity}</b></TableCell>
-        :(row.available_capacity<100?<TableCell align="right" style={{color:"yellow"}}><b>{row.available_capacity}</b></TableCell>
+        :(row.available_capacity<100?<TableCell align="right" style={{color:"orange"}}><b>{row.available_capacity}</b></TableCell>
         :<TableCell align="right" style={{color:"green"}}><b>{row.available_capacity}</b></TableCell>)}
         <TableCell align="right">{row.vaccine}</TableCell>
         
@@ -278,7 +278,7 @@ function Row(props) {
                   <ListItemSecondaryAction>
                     <IconButton edge="end" aria-label="delete" onClick={()=>{setCurrHospital(hospital)}}>
                     {currhospital && hospital.center_id===currhospital.center_id 
-                  ? <ArrowBackIosIcon/>:<ArrowForwardIosIcon  />}
+                  ? <ArrowBackIosIcon/>:<a href="#hospInfoGrid"><ArrowForwardIosIcon  /></a>}
                     </IconButton>
                   </ListItemSecondaryAction>
                 </ListItem>                
@@ -351,8 +351,8 @@ function Row(props) {
                    secondary={hospital.center_id}
                  />
                  <ListItemSecondaryAction>
-                   <IconButton edge="end" aria-label="delete" onClick={()=>{setCurrHospital(hospital)}}>
-                     <ArrowForwardIosIcon  />
+                   <IconButton edge="end" aria-label="delete"  onClick={()=>{setCurrHospital(hospital)}}>
+                     <a href="#hospInfoGrid"><ArrowForwardIosIcon  /></a>
                    </IconButton>
                  </ListItemSecondaryAction>
                </ListItem>)
@@ -372,7 +372,7 @@ function Row(props) {
         
         { currhospital
            ?
-        <Grid xs={12} md={6}>
+        <Grid xs={12} md={6} id="hospInfoGrid">
          {/* <Paper style={{marginTop:'10px'}}> */}
            <Card className={classes.card} style={{marginTop:'10px', marginLeft:'10px'}} elevation={3}>
             <CardContent>

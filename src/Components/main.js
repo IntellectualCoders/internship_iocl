@@ -127,7 +127,7 @@ export default function CenteredGrid() {
     resource.bed?array.push('%23bed%20OR%20bed%20'):console.log('Do not worry we are here to HELP!!');
     resource.vental?array.push('%23ventilator%20OR%20ventilator%20'):console.log('Do not worry we are here to HELP!!');
     resource.ambulance?array.push('%23ambulance%20OR%20ambulance%20'):console.log('Do not worry we are here to HELP!!');
-    resource.covidTest?array.push('%23CovidTest%20OR%20CovidTest%20'):console.log('Do not worry we are here to HELP!!');
+    resource.covidTest?array.push('%20%23CovidTesting%20OR%20CovidTesting%20'):console.log('Do not worry we are here to HELP!!');
     resource.fabi?array.push('%23fabiflu%20OR%20fabiflu%20'):console.log('Do not worry we are here to HELP!!');
     var string='';
     array.map((a)=>{

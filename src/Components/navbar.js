@@ -30,7 +30,7 @@ export default function Navbar({history}) {
           <Typography variant="h6" className={classes.title}>
             COVID-19 Resources
           </Typography>
-          <Button color="inherit" onClick={()=>{history.push("/home")}}>Home</Button>
+          <Button color="inherit" onClick={()=>{history.push("/")}}>Home</Button>
           <Button color="inherit" onClick={()=>{history.push("/vaccination")}}>Vaccination</Button>
         </Toolbar>
       </AppBar>
