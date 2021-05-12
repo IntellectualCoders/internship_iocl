@@ -8,7 +8,7 @@ function App() {
     <>
     <BrowserRouter>
     <Switch>
-      <Route exact path="/">
+    <Route exact path="/">
     <Navbar />
     <CenteredGrid />
     </Route>
