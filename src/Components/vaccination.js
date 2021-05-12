@@ -7,17 +7,18 @@ import axios from 'axios';
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import WarningIcon from '@material-ui/icons/Warning';
-
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-
-import PropTypes from 'prop-types';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import Box from '@material-ui/core/Box';
 import Collapse from '@material-ui/core/Collapse';
 import Table from '@material-ui/core/Table';
@@ -38,7 +39,7 @@ import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import FolderIcon from '@material-ui/icons/Folder';
 import DeleteIcon from '@material-ui/icons/Delete';
-
+import vaccine from '../imgs/vaccine.png';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -126,7 +127,10 @@ function Row(props) {
           {row.date}
         </TableCell>
         <TableCell align="right">{row.min_age_limit}</TableCell>
-        <TableCell align="right">{row.available_capacity}</TableCell>
+        {row.available_capacity<30?
+        <TableCell align="right" style={{color:"red"}}> <b>{row.available_capacity}</b></TableCell>
+        :(row.available_capacity<100?<TableCell align="right" style={{color:"yellow"}}><b>{row.available_capacity}</b></TableCell>
+        :<TableCell align="right" style={{color:"green"}}><b>{row.available_capacity}</b></TableCell>)}
         <TableCell align="right">{row.vaccine}</TableCell>
         
       </TableRow>
@@ -164,12 +168,12 @@ function Row(props) {
 
 
 
-  
-
-
  const Vaccination =() => {
   const [dense, setDense] = useState(false);
   const [pincode,setPincode]=useState('110001');
+  const [minAge, setMinAge]=useState('All');
+  const [notFound,setNotFound]=useState(0);
+  const [totalSes,setTotalSes]=useState(0);
   const classes = useStyles();
 
   const[hospitals,setHospitals]=useState([]);
@@ -212,42 +216,59 @@ function Row(props) {
         <Grid className={classes.row} container spacing={3}>
         <Grid item xs={12}>
         <Typography variant="p" component="p" style={{color: "red", textAlign:"center"}}><WarningIcon style={{color:"red", fontSize:'30px'}}/></Typography>
-        <Typography variant="p" component="p" style={{color: "red", textAlign:"center"}}>Do <b>NOT</b> make advanced payments unless you are 100% sure about their authenticity.
+        <Typography variant="p" component="p" style={{color: "red", textAlign:"center"}}>You can <b>NOT</b> book vaccination appointment via this app.
         <br/>
-         Check for replies under the tweets</Typography>
+         Please visit <a style={{color:"red"}} href="https://www.cowin.gov.in/home">Cowin.gov.in</a></Typography>
          </Grid>
-        <Grid item xs={12} md={3}>
-          <Paper className={classes.root} elevation={3}>
-       
+         { currhospital
+         ?<>
+         <Grid item xs={12} md={3}>
+         <Paper className={classes.root} elevation={3}>
+      
+     <FormControl className={classes.formControl}>
+     <TextField id="outlined-basic" 
+     label="Enter Pin" variant="outlined" 
+     value={pincode} 
+     onChange={(e)=>setPincode(e.target.value)} 
+     />
+     </FormControl>
       <FormControl className={classes.formControl}>
-      <TextField id="outlined-basic" 
-      label="Enter Pin" variant="outlined" 
-      value={pincode} 
-      onChange={(e)=>setPincode(e.target.value)} 
-      />
-      </FormControl>
-      <Button onClick={()=>{searchByPincode()}}>Search by Pincode</Button>
-     
-      </Paper>
-        </Grid>
-        <Grid item xs={12} md={3} >
-        <Card className={classes.card} style={{maxHeight:"80vh", overflowY:"scroll"}} elevation={3}>
-      <CardContent>
-        <Typography className={classes.title} color="textSecondary" gutterBottom>
-          Hospitals <LocalHospitalIcon className={classes.icon}/>
-        </Typography>
-        <Typography variant="h5" component="h2">
-          {pincode?pincode:'110001'}
-        </Typography>
-        <Typography className={classes.pos} color="textSecondary">
-        <List dense={dense}>
-           {
-             hospitals && hospitals.map((hospital)=>{
-               return(
+     <InputLabel id="demo-simple-select-outlined-label">Age</InputLabel>
+       <Select
+         labelId="demo-simple-select-outlined-label"
+         id="demo-simple-select-outlined"
+         value={minAge}
+         onChange={(e)=>{setMinAge(e.target.value)}}
+         label="State"
+       >
+         
+         <MenuItem value="All">All</MenuItem>
+         <MenuItem value="18-44">18-44</MenuItem>
+         <MenuItem value="45+">45+</MenuItem>
+       </Select>
+     </FormControl>
+     <Button color="primary" variant="contained" className={classes.button} onClick={()=>{searchByPincode()}}>Search by Pincode</Button>
+    
+     </Paper>
+       </Grid>
+       <Grid item xs={12} md={3} >
+       <Card className={classes.card} style={{maxHeight:"80vh", overflowY:"scroll"}} elevation={3}>
+     <CardContent>
+       <Typography className={classes.title} color="textSecondary" gutterBottom>
+         Hospitals <LocalHospitalIcon className={classes.icon}/>
+       </Typography>
+       <Typography variant="h5" component="h2">
+         {pincode?pincode:'110001'}
+       </Typography>
+       <Typography className={classes.pos} color="textSecondary">
+       <List dense={dense}>
+          {
+            hospitals && hospitals.map((hospital)=>{
+              return(
                 <ListItem>
                   <ListItemAvatar>
-                    <Avatar>
-                      <FolderIcon />
+                    <Avatar src="https://img.icons8.com/plasticine/2x/hospital-2.png">
+                     
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText
@@ -256,30 +277,105 @@ function Row(props) {
                   />
                   <ListItemSecondaryAction>
                     <IconButton edge="end" aria-label="delete" onClick={()=>{setCurrHospital(hospital)}}>
-                      <DeleteIcon />
+                    {currhospital && hospital.center_id===currhospital.center_id 
+                  ? <ArrowBackIosIcon/>:<ArrowForwardIosIcon  />}
                     </IconButton>
                   </ListItemSecondaryAction>
-                </ListItem>)
-             })
-           }
-            </List>
-        </Typography>
-      </CardContent>
-      <CardActions>
+                </ListItem>                
+               )
+            })
+          }
+           </List>
+       </Typography>
+     </CardContent>
+     <CardActions>
+      
        
+     </CardActions>
+   </Card>
+       </Grid>
+       </>
+         :
+         <>
+         <Grid item xs={12} md={4}>
+         <Paper className={classes.root} elevation={3}>
+      
+     <FormControl className={classes.formControl}>
+     <TextField id="outlined-basic" 
+     label="Enter Pin" variant="outlined" 
+     value={pincode} 
+     onChange={(e)=>setPincode(e.target.value)} 
+     />
+     </FormControl>
+      <FormControl className={classes.formControl}>
+     <InputLabel id="demo-simple-select-outlined-label">Age</InputLabel>
+       <Select
+         labelId="demo-simple-select-outlined-label"
+         id="demo-simple-select-outlined"
+         value={minAge}
+         onChange={(e)=>{setMinAge(e.target.value)}}
+         label="State"
+       >
+         
+         <MenuItem value="All">All</MenuItem>
+         <MenuItem value="18-44">18-44</MenuItem>
+         <MenuItem value="45+">45+</MenuItem>
+       </Select>
+     </FormControl>
+     <Button color="primary" variant="contained" className={classes.button} onClick={()=>{searchByPincode()}}>Search by Pincode</Button>
+    
+     </Paper>
+       </Grid>
+       <Grid item xs={12} md={4} >
+       <Card className={classes.card} style={{maxHeight:"80vh", overflowY:"scroll"}} elevation={3}>
+     <CardContent>
+       <Typography className={classes.title} color="textSecondary" gutterBottom>
+         Hospitals <LocalHospitalIcon className={classes.icon}/>
+       </Typography>
+       <Typography variant="h5" component="h2">
+         {pincode?pincode:'110001'}
+       </Typography>
+       <Typography className={classes.pos} color="textSecondary">
+       <List dense={dense}>
+          {
+            hospitals && hospitals.map((hospital)=>{
+              return(
+               <ListItem>
+                 <ListItemAvatar>
+                   <Avatar src="https://img.icons8.com/plasticine/2x/hospital-2.png">
+                    
+                   </Avatar>
+                 </ListItemAvatar>
+                 <ListItemText
+                   primary={hospital.name}
+                   secondary={hospital.center_id}
+                 />
+                 <ListItemSecondaryAction>
+                   <IconButton edge="end" aria-label="delete" onClick={()=>{setCurrHospital(hospital)}}>
+                     <ArrowForwardIosIcon  />
+                   </IconButton>
+                 </ListItemSecondaryAction>
+               </ListItem>)
+            })
+          }
+           </List>
+       </Typography>
+     </CardContent>
+     <CardActions>
+      
+       
+     </CardActions>
+   </Card>
+ </Grid>
+       </>
+         }
         
-      </CardActions>
-    </Card>
-
-
-
-        </Grid>
+        { currhospital
+           ?
         <Grid xs={12} md={6}>
          {/* <Paper style={{marginTop:'10px'}}> */}
            <Card className={classes.card} style={{marginTop:'10px', marginLeft:'10px'}} elevation={3}>
             <CardContent>
-           { currhospital
-           ? <>
              <Typography className={classes.pos} color="textSecondary">
                Hospital Name : {currhospital.name}
              </Typography>
@@ -312,25 +408,22 @@ function Row(props) {
                       </TableHead>
                       <TableBody>
                         {currhospital.sessions.map((row) => (
+                          minAge === "18-44" && row.min_age_limit === 18?
                           <Row key={row.name} row={row} />
+                          :(minAge === "45+" && row.min_age_limit ===45?<Row key={row.name} row={row} />
+                          :(minAge === "All" ?<Row key={row.name} row={row} />:<></>))
                         ))}
                       </TableBody>
                     </Table>
                   </TableContainer>
-
-
-
-
-
-
              </Typography>
-             </>
-           :<img style={{width: '100%',borderRadius: '10px'}}src="https://www.humansupportgroup.co.uk/wp-content/uploads/2020/05/stay-home-save-lives-flyer-template-design-b5427054ab3b0e1697426c73ac656ffc_screen.jpg"/>
-           }
            </CardContent>
            </Card>
-         
         </Grid>
+        :<Grid xs={12} md={4}>
+          <img alt="staysafepic" style={{width: '100%',borderRadius: '10px', marginTop:"10px"}}src={vaccine}/>
+          </Grid>
+      }
       </Grid>
       <BottomNavigation
       showLabels

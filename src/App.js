@@ -1,20 +1,19 @@
 import './App.css';
-import Navbar from './Components/navbar';
-import CenteredGrid from './Components/main';
-import Vaccination from './Components/vaccination';
+import Home from './Pages/Home';
+import VaccinationPage from './Pages/Vaccination';
+
+
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 function App() {
   return (
     <>
     <BrowserRouter>
     <Switch>
-    <Route exact path="/">
-    <Navbar />
-    <CenteredGrid />
+    <Route exact path="/home">
+    <Home/>
     </Route>
     <Route exact path="/vaccination">
-    <Navbar />
-    <Vaccination/>
+    <VaccinationPage/>
     </Route>
       </Switch></BrowserRouter>
     
