@@ -9,7 +9,7 @@ function App() {
     <>
     <BrowserRouter>
     <Switch>
-    <Route exact path="/home">
+    <Route exact path="/">
     <Home/>
     </Route>
     <Route exact path="/vaccination">

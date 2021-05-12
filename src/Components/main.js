@@ -20,7 +20,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import WarningIcon from '@material-ui/icons/Warning';
-
+import { useHistory } from "react-router-dom";
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 
@@ -87,6 +87,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function CenteredGrid() {
+  const history = useHistory();
+
+  function handleClick() {
+    history.push("/vaccination");
+  }
 
   const [state,setState]=useState("Delhi");
   const [city, setCity] =useState("Delhi");
@@ -401,6 +406,8 @@ export default function CenteredGrid() {
         label="Fabiflu"
       />
       </FormGroup>
+        <div style={{marginTop : "10px"}}></div>
+      <Button color="primary" className={classes.button} variant="contained" onClick={()=>{handleClick()}}>Check your nearest vaccination center and slots availability </Button>
       </Paper>
         </Grid>
         <Grid item xs={12} md={4} >
