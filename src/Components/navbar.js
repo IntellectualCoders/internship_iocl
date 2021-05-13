@@ -32,7 +32,7 @@ export default function Navbar({history}) {
           </Typography>
           <Button color="inherit" onClick={()=>{history.push("/")}}>Home</Button>
           <Button color="inherit" onClick={()=>{history.push("/vaccination")}}>Vaccination</Button>
-          <Button color="inherit" onClick={()=>{history.push("/district")}}>District</Button>
+          {/* <Button color="inherit" onClick={()=>{history.push("/district")}}>District</Button> */}
         </Toolbar>
       </AppBar>
     </div>
