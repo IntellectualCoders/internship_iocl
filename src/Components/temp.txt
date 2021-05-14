@@ -1,0 +1,241 @@
+{currhospital ? (
+            <>
+              <Grid item xs={12} md={3}>
+                <Paper className={classes.root} elevation={3}>
+                  <ToggleButtonGroup
+                    value={alignment}
+                    exclusive
+                    onChange={handleAlignment}
+                    aria-label="text alignment"
+                    style={{ marginBottom: "20px" }}
+                  >
+                    <ToggleButton
+                      className={classes.button}
+                      onClick={() => {
+                        searchByPincode();
+                      }}
+                      value="left"
+                      aria-label="left aligned"
+                    >
+                      Search By Pincode
+                    </ToggleButton>
+                    <ToggleButton
+                      className={classes.button}
+                      value="center"
+                      onClick={() => {
+                        searchByDistrict();
+                      }}
+                      aria-label="centered"
+                    >
+                      Search By district
+                    </ToggleButton>
+                  </ToggleButtonGroup>
+
+                  {alignment === "center" ? (
+                    <>
+                      <FormControl
+                        variant="outlined"
+                        className={classes.formControl}
+                      >
+                        <InputLabel id="demo-simple-select-outlined-label">
+                          State
+                        </InputLabel>
+
+                        <Select
+                          labelId="demo-simple-select-outlined-label"
+                          id="demo-simple-select-outlined"
+                          value={state}
+                          onChange={(e) => {
+                            setState(e.target.value);
+                          }}
+                          label="State"
+                        >
+                          {statesname &&
+                            statesname.map((state) => {
+                              return (
+                                <MenuItem
+                                  key={state.state_id}
+                                  value={state.state_name}
+                                  onClick={(event) => {
+                                    stateid(state.state_id);
+                                  }}
+                                >
+                                  {state && state.state_name}
+                                </MenuItem>
+                              );
+                            })}
+                        </Select>
+                      </FormControl>
+                      <FormControl
+                        variant="outlined"
+                        className={classes.formControl}
+                      >
+                        <InputLabel id="demo-simple-select-outlined-label">
+                          Districts
+                        </InputLabel>
+
+                        <Select
+                          labelId="demo-simple-select-outlined-label"
+                          id="demo-simple-select-outlined"
+                          value={district}
+                          onChange={(e) => {
+                            setDistrict(e.target.value);
+                          }}
+                          label="District"
+                        >
+                          {districtname &&
+                            districtname.map((district) => {
+                              return (
+                                <MenuItem
+                                  key={district.district_id}
+                                  value={district.district_name}
+                                  onClick={(event) => {
+                                    districtid(district.district_id);
+                                  }}
+                                >
+                                  {district && district.district_name}
+                                </MenuItem>
+                              );
+                            })}
+                        </Select>
+                      </FormControl>
+                      <FormControl className={classes.formControl}>
+                        <InputLabel id="demo-simple-select-outlined-label">
+                          Age
+                        </InputLabel>
+                        <Select
+                          labelId="demo-simple-select-outlined-label"
+                          id="demo-simple-select-outlined"
+                          value={minAge}
+                          onChange={(e) => {
+                            setMinAge(e.target.value);
+                          }}
+                          label="State"
+                        >
+                          <MenuItem value="All">All</MenuItem>
+                          <MenuItem value="18-44">18-44</MenuItem>
+                          <MenuItem value="45+">45+</MenuItem>
+                        </Select>
+                        <Button
+                          color="primary"
+                          variant="contained"
+                          className={classes.buttondistrict}
+                          onClick={() => {
+                            searchByDistrict();
+                          }}
+                        >
+                          Search by District
+                        </Button>
+                      </FormControl>
+                    </>
+                  ) : (
+                    <>
+                      <FormControl className={classes.formControl}>
+                        <TextField
+                          id="outlined-basic"
+                          label="Enter Pin"
+                          variant="outlined"
+                          value={pincode}
+                          onChange={(e) => setPincode(e.target.value)}
+                        />
+                      </FormControl>
+                      <FormControl className={classes.formControl}>
+                        <InputLabel id="demo-simple-select-outlined-label">
+                          Age
+                        </InputLabel>
+                        <Select
+                          labelId="demo-simple-select-outlined-label"
+                          id="demo-simple-select-outlined"
+                          value={minAge}
+                          onChange={(e) => {
+                            setMinAge(e.target.value);
+                          }}
+                          label="State"
+                        >
+                          <MenuItem value="All">All</MenuItem>
+                          <MenuItem value="18-44">18-44</MenuItem>
+                          <MenuItem value="45+">45+</MenuItem>
+                        </Select>
+                      </FormControl>
+                      <Button
+                        color="primary"
+                        variant="contained"
+                        className={classes.buttondistrict}
+                        onClick={() => {
+                          searchByPincode();
+                        }}
+                      >
+                        Search by Pincode
+                      </Button>
+                    </>
+                  )}
+                </Paper>
+              </Grid>
+              <Grid item xs={12} md={3}>
+                <Card
+                  className={classes.card}
+                  style={{ maxHeight: "80vh", overflowY: "scroll" }}
+                  elevation={3}
+                >
+                  <CardContent>
+                    <Typography
+                      className={classes.title}
+                      color="textSecondary"
+                      gutterBottom
+                    >
+                      Hospitals <LocalHospitalIcon className={classes.icon} />
+                    </Typography>
+                    <Typography variant="h5" component="h2">
+                      {alignment === "center" ? (
+                        <>{districtname ? districtname : ""}</>
+                      ) : (
+                        <>{pincode ? pincode : "110001"}</>
+                      )}
+                    </Typography>
+                    <Typography className={classes.pos} color="textSecondary">
+                      <List dense={dense}>
+                        {hospitals &&
+                          hospitals.map((hospital) => {
+                            return (
+                              <ListItem>
+                                <ListItemAvatar>
+                                  <Avatar src="https://img.icons8.com/plasticine/2x/hospital-2.png"></Avatar>
+                                </ListItemAvatar>
+                                <ListItemText
+                                  primary={hospital.name}
+                                  secondary={hospital.center_id}
+                                />
+                                <ListItemSecondaryAction>
+                                  <IconButton
+                                    edge="end"
+                                    aria-label="delete"
+                                    onClick={() => {
+                                      setCurrHospital(hospital);
+                                    }}
+                                  >
+                                    {console.log(currhospital),
+                                    console.log(hospital.center_id),
+                                    console.log(currhospital.center_id)}
+                                    {currhospital &&
+                                    hospital.center_id ===
+                                      currhospital.center_id ? (
+                                      <ArrowBackIosIcon />
+                                    ) : (
+                                      <a href="#hospInfoGrid">
+                                       <ArrowForwardIosIcon />
+                                      </a>
+                                      
+                                    )}
+                                  </IconButton>
+                                </ListItemSecondaryAction>
+                              </ListItem>
+                            );
+                          })}
+                      </List>
+                    </Typography>
+                  </CardContent>
+                  <CardActions></CardActions>
+                </Card>
+              </Grid>
+            </>
+          ) : (
