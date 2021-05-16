@@ -16,10 +16,6 @@ function App() {
     <Route exact path="/vaccination">
     <VaccinationPage/>
     </Route>
-    <Route exact path="/district">
-    <Navbar/>
-    <Vaccinationbydistrict/>
-    </Route>
       </Switch></BrowserRouter>
     
     
