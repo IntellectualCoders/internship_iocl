@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useEffect, useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -6,7 +6,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import TelegramIcon from '@material-ui/icons/Telegram';
-
+import { withStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import FormGroup from '@material-ui/core/FormGroup';
@@ -14,6 +14,12 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import MuiDialogTitle from '@material-ui/core/DialogTitle';
+import MuiDialogContent from '@material-ui/core/DialogContent';
+import MuiDialogActions from '@material-ui/core/DialogActions';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -83,16 +89,61 @@ const useStyles = makeStyles((theme) => ({
     marginBottom:'-20px',
     width:'100vw !important'
 
-  }
+  },
+  modal:{
+    margin: 0,
+    padding: theme.spacing(2),
+  },
+  closeButton: {
+    position: 'absolute',
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  },
 }));
+
+const DialogTitle = withStyles(useStyles)((props) => {
+  const { children, classes, onClose, ...other } = props;
+  return (
+    <MuiDialogTitle disableTypography className={classes.modal} {...other}>
+      <Typography variant="h6">{children}</Typography>
+      {/* {onClose ? (
+        <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
+          <CloseIcon />
+        </IconButton>
+      ) : null} */}
+    </MuiDialogTitle>
+  );
+});
+
+const DialogContent = withStyles((theme) => ({
+  root: {
+    padding: theme.spacing(2),
+  },
+}))(MuiDialogContent);
+
+const DialogActions = withStyles((theme) => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing(1),
+  },
+}))(MuiDialogActions);
 
 export default function CenteredGrid() {
   const history = useHistory();
+ 
+useEffect(() => {
+const modalOpen=() => {
+ setOpen(true);
+ setModalCount(1);
+}
+modalCount==0?modalOpen():console.log("New Feature");
+},[])
 
   function handleClick() {
     history.push("/vaccination");
   }
-
+  const [modalCount,setModalCount]=useState(0);
   const [state,setState]=useState("Delhi");
   const [city, setCity] =useState("Delhi");
   const [resource,setResource]=useState({
@@ -112,6 +163,14 @@ export default function CenteredGrid() {
       covidTest:false,
       fabi: false
   })
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
   const classes = useStyles();
   const handleChange = (event) => {
     setResource({ ...resource, [event.target.name]: event.target.checked });
@@ -199,6 +258,30 @@ export default function CenteredGrid() {
 
   return (
     <>
+    <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
+        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+          Attention !! 
+        </DialogTitle>
+        <DialogContent dividers>
+          <Typography gutterBottom>
+            A new feature has been added where you can check the availabilty of vaccination slots around you.
+          </Typography>
+          <Typography gutterBottom>
+           No login or signup needed to access this feature. You can search by pincode or district and also apply different age filters according to your needs.
+          </Typography>
+          <Typography gutterBottom>
+            Click below on the vaccination button to get started. Hope we are of some help 🙏🙏.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+        <Button autoFocus variant="contained" styles={{float:"left"}} onClick={()=>{handleClick()}} color="primary">
+          Vaccination Slots
+          </Button>
+          <Button  onClick={handleClose} variant="contained" color="primary">
+            Close 
+          </Button>
+        </DialogActions>
+      </Dialog>
     <div className={classes.root}>
       <Grid className={classes.row} container spacing={3}>
         <Grid item xs={12}>
@@ -406,9 +489,8 @@ export default function CenteredGrid() {
         label="Fabiflu"
       />
       </FormGroup>
-        <div style={{marginTop : "10px"}}></div>
-      <Button color="primary" className={classes.button} variant="contained" onClick={()=>{handleClick()}}>Check your nearest vaccination center and slots availability </Button>
       </Paper>
+      {/* <Button color="primary" className={classes.button} style={{marginTop:"10px"}} variant="contained" onClick={()=>{handleClick()}}>Check your nearest vaccination center and slots availability </Button> */}
         </Grid>
         <Grid item xs={12} md={4} >
         <Card className={classes.card} elevation={3}>
