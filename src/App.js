@@ -5,6 +5,7 @@ import Vaccinationbydistrict from './Components/vaccinationbydistrict';
 import Districtpage from './Pages/district';
 import Navbar from './Components/navbar';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { useState } from 'react';
 function App() {
   return (
     <>
