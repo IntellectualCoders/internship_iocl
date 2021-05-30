@@ -44,7 +44,6 @@ import vaccine from "../imgs/vaccine.png";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 
-import Vaccinationbydistrict from "./vaccinationbydistrict";
 
 const useStyles = makeStyles((theme) => ({
   root: {

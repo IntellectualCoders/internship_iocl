@@ -133,11 +133,28 @@ export default function CenteredGrid() {
   const history = useHistory();
  
 useEffect(() => {
-const modalOpen=() => {
- setOpen(true);
- setModalCount(1);
-}
-modalCount==0?modalOpen():console.log("New Feature");
+
+  const modalNotOpen = () =>{
+    setModalCount(1);
+  } 
+
+  const modalOpen =() =>{
+    setOpen(true);
+   localStorage.setItem('modal', true);
+  }
+  
+  const shouldModalOpen=localStorage.getItem('modal') ? localStorage.getItem('modal') : false ;
+
+shouldModalOpen 
+?  modalNotOpen()
+:  modalOpen() 
+
+// const modalOpen=() => {
+//  setOpen(true);
+//  setModalCount(1);
+//  localStorage.setItem('modal', true);
+// }
+// modalCount==0?modalOpen():console.log("New Feature");
 },[])
 
   function handleClick() {
