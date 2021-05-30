@@ -131,6 +131,7 @@ const DialogActions = withStyles((theme) => ({
 
 export default function CenteredGrid() {
   const history = useHistory();
+  const [open, setOpen] = React.useState(false);
  
 useEffect(() => {
 
@@ -180,14 +181,14 @@ shouldModalOpen
       covidTest:false,
       fabi: false
   })
-  const [open, setOpen] = React.useState(false);
+  
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
+  // const handleClickOpen = () => {
+  //   setOpen(true);
+  // };
+  // const handleClose = () => {
+  //   setOpen(false);
+  // };
   const classes = useStyles();
   const handleChange = (event) => {
     setResource({ ...resource, [event.target.name]: event.target.checked });
@@ -275,30 +276,7 @@ shouldModalOpen
 
   return (
     <>
-    <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
-        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-          Attention !! 
-        </DialogTitle>
-        <DialogContent dividers>
-          <Typography gutterBottom>
-            A new feature has been added where you can check the availabilty of vaccination slots around you.
-          </Typography>
-          <Typography gutterBottom>
-           No login or signup needed to access this feature. You can search by pincode or district and also apply different age filters according to your needs.
-          </Typography>
-          <Typography gutterBottom>
-            Click below on the vaccination button to get started. Hope we are of some help 🙏🙏.
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-        <Button autoFocus variant="contained" styles={{float:"left"}} onClick={()=>{handleClick()}} color="primary">
-          Vaccination Slots
-          </Button>
-          <Button  onClick={handleClose} variant="contained" color="primary">
-            Close 
-          </Button>
-        </DialogActions>
-      </Dialog>
+    
     <div className={classes.root}>
       <Grid className={classes.row} container spacing={3}>
         <Grid item xs={12}>
@@ -595,7 +573,30 @@ shouldModalOpen
     </Typography>
      </BottomNavigation>
     </div>
-    
+    <Dialog  aria-labelledby="customized-dialog-title" open={open}>
+        <DialogTitle id="customized-dialog-title" >
+          Attention !! 
+        </DialogTitle>
+        <DialogContent dividers>
+          <Typography gutterBottom>
+            A new feature has been added where you can check the availabilty of vaccination slots around you.
+          </Typography>
+          <Typography gutterBottom>
+           No login or signup needed to access this feature. You can search by pincode or district and also apply different age filters according to your needs.
+          </Typography>
+          <Typography gutterBottom>
+            Click below on the vaccination button to get started. Hope we are of some help 🙏🙏.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+        <Button autoFocus variant="contained" styles={{float:"left"}} onClick={()=>{handleClick()}} color="primary">
+          Vaccination Slots
+          </Button>
+          {/* <Button  onClick={()=>{history.push("/");}} variant="contained" color="primary">
+            Close 
+          </Button> */}
+        </DialogActions>
+      </Dialog>
     </>
   );
 }
