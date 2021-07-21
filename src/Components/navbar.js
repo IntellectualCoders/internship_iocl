@@ -2,10 +2,13 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
+import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
+import logo from "../imgs/Indian_Oil.png";
+import Typist from 'react-typist';
+import Zoom from 'react-reveal/Zoom';
+import Fade from 'react-reveal/Fade';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,6 +20,11 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
+  title2: {
+    flexGrow: 1,
+    fontSize:'15px',
+    fontFamily: 'Courgette, cursive'
+  },
 }));
 
 export default function Navbar({history}) {
@@ -24,16 +32,29 @@ export default function Navbar({history}) {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="static" style={{background:'#191970', borderBottom:'20px solid #EC6504',minHeight:'50px'}}>
         <Toolbar>
-          <img src="https://img.icons8.com/bubbles/2x/coronavirus.png" style={{height:"50px", marginRight:"10px"}}></img>
-          <Typography variant="h6" className={classes.title}>
-            COVID-19 Resources
+          <Zoom duration={3000}>
+          <img alt="logo" src={logo} style={{height:"70px", marginRight:"10px"}}></img></Zoom>
+          <Grid style={{flex:'1'}}>
+          <Fade top delay={2000} distance='50%'>
+          <Typography variant="h4" className={classes.title}>
+          Indian Oil
           </Typography>
-          <Button color="inherit" onClick={()=>{history.push("/")}}>Home</Button>
-          <Button color="inherit" onClick={()=>{history.push("/vaccination")}}>Vaccination</Button>
+          </Fade>
+          <Typography className={classes.title2}>
+          <Typist stdTypingDelay={20} startDelay={100} avgTypingDelay={200} cursor={{show:'false',element:''}} >
+          <Typist.Delay ms={3450} />
+            The Energy of India
+            </Typist>
+          </Typography>
+          </Grid>
+          <div>
+          <Button style={{float:'right'}}color="inherit" onClick={()=>{history.push("/covidLeads")}}>COVID Leads</Button>
+          {/* <Button color="inherit" onClick={()=>{history.push("/vaccination")}}>Vaccination</Button> */}
+          </div>
           {/* <Button color="inherit" onClick={()=>{history.push("/district")}}>District</Button> */}
-        </Toolbar>
+          </Toolbar>
       </AppBar>
     </div>
   );

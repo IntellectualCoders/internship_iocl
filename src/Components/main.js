@@ -18,8 +18,7 @@ import Dialog from '@material-ui/core/Dialog';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
+import InfoIcon from '@material-ui/icons/Info';
 
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -28,7 +27,6 @@ import Typography from '@material-ui/core/Typography';
 import WarningIcon from '@material-ui/icons/Warning';
 import { useHistory } from "react-router-dom";
 import BottomNavigation from '@material-ui/core/BottomNavigation';
-import FavoriteIcon from '@material-ui/icons/Favorite';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -81,9 +79,9 @@ const useStyles = makeStyles((theme) => ({
     color:"#3F51B5",
   },
   footer :{
-    width: '100%',
-    backgroundColor:'#3F51B5',
+    backgroundColor:'#191970',
     padding:'0px !important',
+    paddingBottom:'20px !important',
     marginLeft:'-20px',
     marginTop:'20px',
     marginBottom:'-20px',
@@ -559,18 +557,20 @@ shouldModalOpen
         </Grid>
         <Grid xs={12} md={4}>
          <Paper style={{marginTop:'10px'}}>
-           <img style={{width: '100%',borderRadius: '10px'}}src="https://www.humansupportgroup.co.uk/wp-content/uploads/2020/05/stay-home-save-lives-flyer-template-design-b5427054ab3b0e1697426c73ac656ffc_screen.jpg"/>
+           <img alt='img' style={{width: '100%',borderRadius: '10px'}} src="https://www.humansupportgroup.co.uk/wp-content/uploads/2020/05/stay-home-save-lives-flyer-template-design-b5427054ab3b0e1697426c73ac656ffc_screen.jpg"/>
            
          </Paper>
         </Grid>
       </Grid>
-      <BottomNavigation
-      showLabels
-      className={classes.footer}
-    >
+      <BottomNavigation className={classes.footer}>
+    <Grid>
       <Typography style={{color:"white",marginTop:"10px"}}>
-    Made with <FavoriteIcon style={{color:"red"}}/> by <a href="https://github.com/IntellectualCoders/Covid-19-leads" style={{color:"white"}}>Intellectual Coders</a>
+    Developed by Corporate Information Systems Dept
     </Typography>
+    <Typography style={{color:"white"}}>
+    <a href='/#' style={{color:"white"}}> IOCL Data Privacy Policy <InfoIcon>{' '}</InfoIcon></a>
+    </Typography>
+    </Grid>
      </BottomNavigation>
     </div>
     <Dialog  aria-labelledby="customized-dialog-title" open={open}>
