@@ -1,4 +1,4 @@
-import { useEffect , useState } from 'react';
+import React, { useEffect , useState } from 'react';
 import firebase from './firebase';
 import './App.css';
 import Home from './Pages/Home';

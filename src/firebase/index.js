@@ -3,7 +3,7 @@ import "firebase/auth";
 import "firebase/firebase-firestore";
 
 const config = {
-    apiKey: "AIzaSyCXUr5-hMJdyhff77UtXMEBBRQnHTcN0zw",
+  apiKey: "AIzaSyCXUr5-hMJdyhff77UtXMEBBRQnHTcN0zw",
   authDomain: "iocl-telemedicine.firebaseapp.com",
   projectId: "iocl-telemedicine",
   storageBucket: "iocl-telemedicine.appspot.com",
@@ -23,10 +23,8 @@ class Firebase {
   }
 
   login(email, password) {
-    console.log('before final email');
-      var final_email = email.concat("@iocl.co.in");
-      console.log('after final email');
-    return this.auth.signInWithEmailAndPassword(final_email, password);
+    
+    return this.auth.signInWithEmailAndPassword(email, password);
   }
 
   logout() {

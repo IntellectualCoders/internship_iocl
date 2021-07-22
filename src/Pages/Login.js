@@ -78,22 +78,28 @@ function Login({props,history}) {
   }, []);
   const [person, setPerson] = React.useState('employee');
   const [ess_no, setEss_no] = React.useState('');
+  const [finalEmail, setFinalEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
 
   const handleChange = (event) => {
     setPerson(event.target.value);
   };
-  async function login() {
-    console.log("inside login fn");
-    try {
-      await firebase.login(ess_no, password);
-      alert("authenticated");
-      // person === 'admin'?history1.push('/admin'):
-      history1.push('/home');
-    } catch (error) {
-      alert(error.message);
-    }
+  
+  const login = async () => {
+      console.log(ess_no, finalEmail);
+      await firebase.login(finalEmail,password)
+      .then(()=> person === 'admin'?history1.push('/admin'):history1.push('/home'))
+      .catch((e)=> console.log(e));
   }
+
+
+  const emailSetup = e => {
+     var lala = e.concat('@iocl.co.in');
+     setEss_no(e);
+     setFinalEmail(lala);
+  }
+
+
   const doSubmit = () => {
     console.log("in submit button");
     let user_captcha = document.getElementById('user_captcha_input').value;
@@ -125,7 +131,7 @@ function Login({props,history}) {
           <Typography component="h1" variant="h5">
             Login
           </Typography>
-          <form className={classes.form} noValidate>
+          <div className={classes.form} >
           <FormControl variant="outlined" fullWidth>
         <Select
           id="demo-simple-select-outlined"
@@ -153,7 +159,7 @@ function Login({props,history}) {
               name="ESS_no"
               autoComplete="ESS_no"
               value={ess_no}
-              onChange={(e)=>setEss_no(e.target.value)}
+              onChange={(e)=>emailSetup(e.target.value)}
               autoFocus
             />
             <TextField
@@ -201,11 +207,11 @@ function Login({props,history}) {
               variant="contained"
               color="primary"
               className={classes.submit}
-              onClick={() =>login()}
+              onClick={()=>{doSubmit()}}
             >
              Login
             </Button>
-          </form>
+          </div>
         </Paper>
       </Grid>
       <Grid item  md={7} style={{marginBottom:'20px'}}>
