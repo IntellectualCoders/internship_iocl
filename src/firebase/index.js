@@ -42,19 +42,16 @@ class Firebase {
     });
   }
 
-  addUser(
-    name,
-    email,
-    address,
-    city,
-    state,
-    postalcode,
-    phone,
-    capacity,
-    lat,
-    long,
-    service,
-    description
+  addAppointments(
+    essNo,
+    docName,
+    specialization,
+    patient,
+    date,
+    time,
+    isprescription,
+    prescription,
+    status,
   ) {
     // if (!this.auth.currentUser) {
     //   return alert("Not authorized");
@@ -68,34 +65,31 @@ class Firebase {
     //   postalcode,
     // });
     const data = {
-      name,
-      address,
-      email,
-      city,
-      state,
-      postalcode,
-      phone,
-      capacity,
-      lat,
-      long,
-      service,
-      description,
+      essNo,
+      docName,
+    specialization,
+    patient,
+    date,
+    time,
+    isprescription,
+    prescription,
+    status,
       uid: new Date().getTime(),
     };
 
     // adding data here
     this.db
-      .collection("users")
+      .collection("appointments")
       .doc(data.uid.toString())
       .set(data)
       .then(() => {
         // NotificationManager.success("A new user has been added", "Success");
-        alert("Sucess : New User Added");
+        alert("Sucess : Appointment booked");
         // window.location = "/";
       })
       .catch((error) => {
         // NotificationManager.error(error.message, "Create user failed");
-        alert("Failure : New User NOT Added" + "  " + error);
+        alert("Failure : Unable to book the appointment" , "  " , error);
         // this.setState({ isSubmitting: false });
       });
   }

@@ -32,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Navbar({history}) {
   const classes = useStyles();
   const { currentUser } = useContext(AuthContext);
+  // console.log(currentUser);
   return (
     <div className={classes.root}>
       <AppBar position="static" style={{background:'#191970', borderBottom:'20px solid #EC6504',minHeight:'50px'}}>
@@ -55,7 +56,6 @@ export default function Navbar({history}) {
           <Button style={{float:'right'}}color="inherit" onClick={()=>{history.push("/covidLeads")}}>COVID Leads</Button>
           {/* <Button color="inherit" onClick={()=>{history.push("/vaccination")}}>Vaccination</Button> */}
           </div>{currentUser !== null ? <Button style={{float:'right'}}color="inherit" onClick={()=>{firebase.authreturns().signOut()}}>Sign Out</Button> :<div>No User</div>}
-         
           {/* <Button color="inherit" onClick={()=>{history.push("/district")}}>District</Button> */}
           </Toolbar>
       </AppBar>

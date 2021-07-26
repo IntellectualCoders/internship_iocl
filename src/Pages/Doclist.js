@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState,useContext } from 'react';
+import { AuthContext } from "../context/authContext";
 import 'date-fns';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -34,6 +35,8 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import InfoIcon from '@material-ui/icons/Info';
 import AlarmOnIcon from '@material-ui/icons/AlarmOn';
+import firebase from '../firebase';
+import Container from '../utils/loading';
 const useStyles = makeStyles((theme) => ({
     paper: {
         position: 'absolute',
@@ -106,17 +109,18 @@ function getModalStyle() {
 //   })(TextField);
   
 
-
 function Doclist({history}) {
   const classes = useStyles();
+  const {  userDetails } = useContext(AuthContext);
+  const [docList,setDocList] = useState(null); 
   const[specialization,setSpecialization]= useState('All')
   const[patient,setpatient]= useState('SELF - Ashwani Pandhi')
   const [expanded, setExpanded] = React.useState(false);
   const [show, setShow] = useState(false);
-  const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
+  const [selectedDate, setSelectedDate] = React.useState(new Date('2021-08-18'));
   const [modalStyle] = React.useState(getModalStyle);
+  const[isp,setIsp] = useState(false);
   const[time,setTime] = useState(0);
-
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
@@ -137,11 +141,54 @@ function Doclist({history}) {
   const handleChange2 = (event) => {
     setpatient(event.target.value);
   };
+  
+  
+  useEffect(()=>{   
+fetchDocList()
+  },[])
 
+  const fetchDocList= async ()=>{
+    var data;
+    await firebase.db
+    .collection("docList")
+    .get()
+    .then((querySnapshot) => {
+      data = querySnapshot.docs.map((doc) => doc.data());
+      console.log("data: " + data[0]);
+      setDocList(data);
+  });
+}
 
+async function addAppointment(doc) {
+  try {
+    await firebase.addAppointments(
+      // docName,
+      // specialization,
+      // patient,
+      // date,
+      // time,
+      // isprescription,
+      // prescription,
+      // status,
+      userDetails.essNo,
+      doc.name,
+      doc.specialization,
+      patient,
+      selectedDate,
+      time,
+      isp,
+      null,
+      "Open"
+    ); 
+    handleClose();
+  } catch (error) {
+    alert(error.message);
+  }
+} 
   return (
     <>
     <Navbar history={history}/>
+    {userDetails && docList?
     <div style={{margin:'20px', marginBottom:'20px !important', minHeight:'80vh'}}>
         <Typography component="h1" variant="h3" style={{color:"#191970"}}>
          Telemedicine Consultation
@@ -185,280 +232,154 @@ function Doclist({history}) {
         </Grid>
         </form>
         <Grid container style={{marginTop:'20px', marginBottom:'50px !important'}}>
+        {docList.map((doc) => {
+          return(
             <Grid item xs={12} md={4}>
-        <Card className={classes.root}>
-      <CardContent>
-          <Grid container >
-              <Grid item xs={12} md={4} >
-              <Avatar className={classes.large} alt="Remy Sharp" src="https://image.shutterstock.com/image-photo/profile-picture-smiling-millennial-asian-260nw-1836020740.jpg" />
-              </Grid>
-              <Grid item xs={12} md={8} >
-                  <Grid container>
-                      <Grid item xs={12}>
-        <Typography variant="h4" color="textPrimary" component="h2">
-          Dr Anamika
-        </Typography></Grid>
-        <Grid item xs={12}>
-        <Typography variant="h6" color="textSecondry" component="h6">
-          Pediatrician
-        </Typography></Grid>
-        <Grid item xs={12}>
-        <Typography variant="body1" color="textSecondry" component="p">
-        <LocationOnIcon style={{color:"#191970"}}/>  Ahemdabad 
-        </Typography></Grid>
-        <Grid item xs={12}>
-        <Typography variant="body1" color="textSecondry" component="p">
-        <WatchLaterIcon style={{color:"#191970"}}/>  10 AM to 12:30 AM 
-        </Typography></Grid>
-        <IconButton
-          className={clsx(classes.expand, {
-            [classes.expandOpen]: expanded,
-          })}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon style={{color:"#191970"}} />
-        </IconButton>
+            <Card className={classes.root}>
+          <CardContent>
+              <Grid container >
+                  <Grid item xs={12} md={4} >
+                  <Avatar className={classes.large} alt="Remy Sharp" src={doc.profilePic} />
+                  </Grid>
+                  <Grid item xs={12} md={8} >
+                      <Grid container>
+                          <Grid item xs={12}>
+            <Typography variant="h4" color="textPrimary" component="h2">
+              {doc.name}
+            </Typography></Grid>
+            <Grid item xs={12}>
+            <Typography variant="h6" color="textSecondry" component="h6">
+              {doc.specialization}
+            </Typography></Grid>
+            <Grid item xs={12}>
+            <Typography variant="body1" color="textSecondry" component="p">
+            <LocationOnIcon style={{color:"#191970"}}/>  {doc.location} 
+            </Typography></Grid>
+            <Grid item xs={12}>
+            <Typography variant="body1" color="textSecondry" component="p">
+            <WatchLaterIcon style={{color:"#191970"}}/>  {doc.time[0]} to {doc.time[1]}
+            </Typography></Grid>
+            <IconButton
+              className={clsx(classes.expand, {
+                [classes.expandOpen]: expanded,
+              })}
+              onClick={handleExpandClick}
+              aria-expanded={expanded}
+              aria-label="show more"
+            >
+              <ExpandMoreIcon style={{color:"#191970"}} />
+            </IconButton>
+            </Grid>
+            <Collapse in={expanded} timeout="auto" unmountOnExit>
+            <CardContent>
+              <Typography paragraph>Qualification: {doc.qualification}</Typography>
+              <Typography paragraph>
+               Clinic/Hospital: {doc.hospital}
+              </Typography>
+              <Typography paragraph>
+               Profile: {doc.profile} 
+              </Typography>
+            </CardContent>
+          </Collapse>
+            </Grid>
+            </Grid>
+          </CardContent>
+          <CardActions disableSpacing>
+            <IconButton aria-label="call the doc incase of emergency">
+              <CallIcon style={{color:"#191970"}}/>
+            </IconButton>
+            <IconButton aria-label="mail">
+              <MailIcon style={{color:"#191970"}} />
+            </IconButton>
+            <Button variant="contained" color="primary" style={{marginLeft:'auto'}} onClick={handleShow}>
+      Book Appointment
+    </Button>
+          </CardActions> 
+          <Modal  open={show}
+            onClose={handleClose}
+            aria-labelledby="simple-modal-title"
+            aria-describedby="simple-modal-description">
+                <div style={modalStyle} className={classes.paper}>
+    <Typography variant="h4" color="textPrimary" component="h2" style={{textAlign:"center"}}>Book Appointment</Typography>
+            <Typography variant="h4" color="textPrimary" component="h2">
+              {doc.name}
+            </Typography> 
+            <Typography variant="h6" color="textSecondry" component="h6">
+             {doc.specialization}
+            </Typography>
+            <form className={classes.form} noValidate>
+            <Grid container >
+                <Grid item xs={12} style={{ margin:'5px'}}>
+            <FormControl  fullWidth>
+            <InputLabel id="modal-select-id">Select Patient</InputLabel>
+            <Select
+              labelId="modal-form"
+              id="modal-select-id"
+              value={patient}
+              onChange={handleChange2}
+            >
+              <MenuItem value="SELF - Ashwani Pandhi"><em>SELF - {userDetails.name}</em></MenuItem>
+              {userDetails.dependents.map((d)=>{
+                var arr = d.split(";");
+                return(
+                  <MenuItem value={d}>{arr[1]} - {arr[0]}</MenuItem>
+                )
+
+              })}
+            </Select>
+            </FormControl>
+            </Grid>
+            <Grid xs={12} style={{margin:'5px'}}>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+            fullWidth
+              margin="normal"
+              id="date-picker-dialog"
+              label="Appointment Date"
+              format="dd/mm/yyyy"
+              value={selectedDate}
+              onChange={handleDateChange}
+              KeyboardButtonProps={{
+                'aria-label': 'change date',
+              }}
+            />
+            </MuiPickersUtilsProvider>
+            </Grid>
+            </Grid>
+            <Typography variant="h4" color="textPrimary" component="h2">
+              Available Slots
+            </Typography>
+            <ButtonGroup style={{marginTop:'10px'}}size="large" color="primary" aria-label="contained primary button group">
+            <Button style={{marginRight:'10px'}} onClick={()=>setTime("10:00")}>{time === "10:00"?<AlarmOnIcon/>:" "}10:00</Button>
+            <Button style={{marginRight:'10px'}} onClick={()=>setTime("10:15")}>{time === "10:15"?<AlarmOnIcon/>:" "}10:15</Button>
+            <Button style={{marginRight:'10px'}} onClick={()=>setTime("10:30")}>{time === "10:30"?<AlarmOnIcon/>:" "}10:30</Button>
+            <Button style={{marginRight:'10px'}} onClick={()=>setTime("10:45")}>{time === "10:45"?<AlarmOnIcon/>:" "}10:45</Button>
+            <Button style={{marginRight:'10px'}} onClick={()=>setTime("11:00")}>{time === "11:00"?<AlarmOnIcon/>:" "}11:00</Button>
+            <Button style={{marginRight:'10px'}} onClick={()=>setTime("11:15")}>{time === "11:15"?<AlarmOnIcon/>:" "}11:15</Button>
+            <Button style={{marginRight:'10px'}} onClick={()=>setTime("11:30")}>{time === "11:30"?<AlarmOnIcon/>:" "}11:30</Button>
+            <Button style={{marginRight:'10px'}} onClick={()=>setTime("11:45")}>{time === "11:45"?<AlarmOnIcon/>:" "}11:45</Button>
+            <Button style={{marginRight:'10px'}} onClick={()=>setTime("12:00")}>{time === "12:00"?<AlarmOnIcon/>:" "}12:00</Button>
+            <Button style={{marginRight:'10px'}} onClick={()=>setTime("12:15")}>{time === "12:15"?<AlarmOnIcon/>:" "}12:15</Button>
+          </ButtonGroup>
+            </form>
+            <div>
+              <Button variant="contained" color="secondary" onClick={handleClose}>
+                Close
+              </Button>
+              {time?<Button variant="contained" color="primary" style={{float:'right'}} onClick={()=>addAppointment(doc)}>
+                BOOK
+              </Button>:""}
+              </div>
+              </div>
+          </Modal>
+        </Card>
         </Grid>
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-          <Typography paragraph>Qualification: MBBS,D.Pediatrician</Typography>
-          <Typography paragraph>
-           Clinic/Hospital: Nil 
-          </Typography>
-          <Typography paragraph>
-           Profile: 
-          </Typography>
-        </CardContent>
-      </Collapse>
+          );
+        })}
         </Grid>
-        </Grid>
-      </CardContent>
-      <CardActions disableSpacing>
-        <IconButton aria-label="call the doc incase of emergency">
-          <CallIcon style={{color:"#191970"}}/>
-        </IconButton>
-        <IconButton aria-label="mail">
-          <MailIcon style={{color:"#191970"}} />
-        </IconButton>
-        <Button variant="contained" color="primary" style={{marginLeft:'auto'}} onClick={handleShow}>
-  Book Appointment
-</Button>
-      </CardActions> 
-      <Modal  open={show}
-        onClose={handleClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description">
-            <div style={modalStyle} className={classes.paper}>
-<Typography variant="h4" color="textPrimary" component="h2" style={{textAlign:"center"}}>Book Appointment</Typography>
-        <Typography variant="h4" color="textPrimary" component="h2">
-          Dr Anamika
-        </Typography> 
-        <Typography variant="h6" color="textSecondry" component="h6">
-          Pediatrician
-        </Typography>
-        <form className={classes.form} noValidate>
-        <Grid container >
-            <Grid item xs={12} style={{ margin:'5px'}}>
-        <FormControl  fullWidth>
-        <InputLabel id="modal-select-id">Select Patient</InputLabel>
-        <Select
-          labelId="modal-form"
-          id="modal-select-id"
-          value={patient}
-          onChange={handleChange2}
-        >
-          <MenuItem value="SELF - Ashwani Pandhi"><em>SELF - Ashwani Pandhi</em></MenuItem>
-          <MenuItem value="CHILD - Tanya Pandhi">CHILD - Tanya Pandhi</MenuItem>
-          <MenuItem value="CHILD - Yajwin Pandhi">CHILD - Yajwin Pandhi</MenuItem>
-          <MenuItem value="SPOUSE - Ritu Pandhi">SPOUSE - Ritu Pandhi</MenuItem>
-        </Select>
-        </FormControl>
-        </Grid>
-        <Grid xs={12} style={{margin:'5px'}}>
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <KeyboardDatePicker
-        fullWidth
-          margin="normal"
-          id="date-picker-dialog"
-          label="Appointment Date"
-          format="dd/mm/yyyy"
-          value={selectedDate}
-          onChange={handleDateChange}
-          KeyboardButtonProps={{
-            'aria-label': 'change date',
-          }}
-        />
-        </MuiPickersUtilsProvider>
-        </Grid>
-        </Grid>
-        <Typography variant="h4" color="textPrimary" component="h2">
-          Available Slots
-        </Typography>
-        <ButtonGroup style={{marginTop:'10px'}}size="large" color="primary" aria-label="contained primary button group">
-        <Button style={{marginRight:'10px'}} onClick={()=>setTime(1)}>{time === 1?<AlarmOnIcon/>:" "}10:00</Button>
-        <Button style={{marginRight:'10px'}} onClick={()=>setTime(2)}>{time === 2?<AlarmOnIcon/>:" "}10:15</Button>
-        <Button style={{marginRight:'10px'}} onClick={()=>setTime(3)}>{time === 3?<AlarmOnIcon/>:" "}10:30</Button>
-        <Button style={{marginRight:'10px'}} onClick={()=>setTime(4)}>{time === 4?<AlarmOnIcon/>:" "}10:45</Button>
-        <Button style={{marginRight:'10px'}} onClick={()=>setTime(5)}>{time === 5?<AlarmOnIcon/>:" "}11:00</Button>
-        <Button style={{marginRight:'10px'}} onClick={()=>setTime(6)}>{time === 6?<AlarmOnIcon/>:" "}11:15</Button>
-        <Button style={{marginRight:'10px'}} onClick={()=>setTime(7)}>{time === 7?<AlarmOnIcon/>:" "}11:30</Button>
-        <Button style={{marginRight:'10px'}} onClick={()=>setTime(8)}>{time === 8?<AlarmOnIcon/>:" "}11:45</Button>
-        <Button style={{marginRight:'10px'}} onClick={()=>setTime(9)}>{time === 9?<AlarmOnIcon/>:" "}12:00</Button>
-        <Button style={{marginRight:'10px'}} onClick={()=>setTime(10)}>{time === 10?<AlarmOnIcon/>:" "}12:15</Button>
-      </ButtonGroup>
-        </form>
-        <div>
-          <Button variant="contained" color="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          {time?<Button variant="contained" color="primary" style={{float:'right'}} onClick={handleClose}>
-            BOOK
-          </Button>:""}
-          </div>
-          </div>
-      </Modal>
-    </Card>
-    </Grid>
-    <Grid item xs={12} md={4}>
-    <Card className={classes.root}>
-      <CardContent>
-          <Grid container >
-              <Grid item xs={12} md={4} >
-              <Avatar className={classes.large} alt="Remy Sharp" src="https://image.shutterstock.com/image-photo/profile-picture-smiling-millennial-asian-260nw-1836020740.jpg" />
-              </Grid>
-              <Grid item xs={12} md={8} >
-                  <Grid container>
-                      <Grid item xs={12}>
-        <Typography variant="h4" color="textPrimary" component="h2">
-          Dr Anamika
-        </Typography></Grid>
-        <Grid item xs={12}>
-        <Typography variant="h6" color="textSecondry" component="h6">
-          Pediatrician
-        </Typography></Grid>
-        <Grid item xs={12}>
-        <Typography variant="body1" color="textSecondry" component="p">
-        <LocationOnIcon/>  Ahemdabad 
-        </Typography></Grid>
-        <Grid item xs={12}>
-        <Typography variant="body1" color="textSecondry" component="p">
-        <WatchLaterIcon/>  10 AM to 12:30 AM 
-        </Typography></Grid>
-        <IconButton
-          className={clsx(classes.expand, {
-            [classes.expandOpen]: expanded,
-          })}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </IconButton>
-        </Grid>
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-          <Typography paragraph>Qualification: MBBS,D.Pediatrician</Typography>
-          <Typography paragraph>
-           Clinic/Hospital: Nil 
-          </Typography>
-          <Typography paragraph>
-           Profile: 
-          </Typography>
-        </CardContent>
-      </Collapse>
-        </Grid>
-        </Grid>
-      </CardContent>
-      <CardActions disableSpacing>
-        <IconButton aria-label="call the doc incase of emergency">
-          <CallIcon/>
-        </IconButton>
-        <IconButton aria-label="mail">
-          <MailIcon />
-        </IconButton>
-        <Button variant="contained" color="primary" style={{marginLeft:'auto'}} onClick={handleShow}>
-  Book Appointment
-</Button>
-      </CardActions> 
-      <Modal  open={show}
-        onClose={handleClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description">
-            <div style={modalStyle} className={classes.paper}>
-<Typography variant="h4" color="textPrimary" component="h2" style={{textAlign:"center"}}>Book Appointment</Typography>
-        <Typography variant="h4" color="textPrimary" component="h2">
-          Dr Anamika
-        </Typography> 
-        <Typography variant="h6" color="textSecondry" component="h6">
-          Pediatrician
-        </Typography>
-        <form className={classes.form} noValidate>
-        <Grid container >
-            <Grid item xs={12} style={{ margin:'5px'}}>
-        <FormControl  fullWidth>
-        <InputLabel id="modal-select-id">Select Specicalization</InputLabel>
-        <Select
-          labelId="modal-form"
-          id="modal-select-id"
-          value={patient}
-          onChange={handleChange2}
-        >
-          <MenuItem value="SELF - Ashwani Pandhi"><em>SELF - Ashwani Pandhi</em></MenuItem>
-          <MenuItem value="CHILD - Tanya Pandhi">CHILD - Tanya Pandhi</MenuItem>
-          <MenuItem value="CHILD - Yajwin Pandhi">CHILD - Yajwin Pandhi</MenuItem>
-          <MenuItem value="SPOUSE - Ritu Pandhi">SPOUSE - Ritu Pandhi</MenuItem>
-        </Select>
-        </FormControl>
-        </Grid>
-        <Grid xs={12} style={{margin:'5px'}}>
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <KeyboardDatePicker
-        fullWidth
-          margin="normal"
-          id="date-picker-dialog"
-          label="Appointment Date"
-          format="dd/mm/yyyy"
-          value={selectedDate}
-          onChange={handleDateChange}
-          KeyboardButtonProps={{
-            'aria-label': 'change date',
-          }}
-        />
-        </MuiPickersUtilsProvider>
-        </Grid>
-        </Grid>
-        <Typography variant="h4" color="textPrimary" component="h2">
-          Available Slots
-        </Typography>
-        <ButtonGroup style={{marginTop:'10px'}}size="large" color="primary" aria-label="contained primary button group">
-        <Button style={{marginRight:'10px'}} onClick={()=>setTime(1)}>{time === 1?<AlarmOnIcon/>:" "}10:00</Button>
-        <Button style={{marginRight:'10px'}} onClick={()=>setTime(2)}>{time === 2?<AlarmOnIcon/>:" "}10:15</Button>
-        <Button style={{marginRight:'10px'}} onClick={()=>setTime(3)}>{time === 3?<AlarmOnIcon/>:" "}10:30</Button>
-        <Button style={{marginRight:'10px'}} onClick={()=>setTime(4)}>{time === 4?<AlarmOnIcon/>:" "}10:45</Button>
-        <Button style={{marginRight:'10px'}} onClick={()=>setTime(5)}>{time === 5?<AlarmOnIcon/>:" "}11:00</Button>
-        <Button style={{marginRight:'10px'}} onClick={()=>setTime(6)}>{time === 6?<AlarmOnIcon/>:" "}11:15</Button>
-        <Button style={{marginRight:'10px'}} onClick={()=>setTime(7)}>{time === 7?<AlarmOnIcon/>:" "}11:30</Button>
-        <Button style={{marginRight:'10px'}} onClick={()=>setTime(8)}>{time === 8?<AlarmOnIcon/>:" "}11:45</Button>
-        <Button style={{marginRight:'10px'}} onClick={()=>setTime(9)}>{time === 9?<AlarmOnIcon/>:" "}12:00</Button>
-        <Button style={{marginRight:'10px'}} onClick={()=>setTime(10)}>{time === 10?<AlarmOnIcon/>:" "}12:15</Button>
-      </ButtonGroup>
-        </form>
-        <div>
-          <Button variant="contained" color="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          {time?<Button variant="contained" color="primary" style={{float:'right'}} onClick={handleClose}>
-            BOOK
-          </Button>:""}
-          </div>
-          </div>
-      </Modal>
-    </Card>
-    </Grid>
-    </Grid>
         </div>
+        :<Container/>
+        }
 
     <BottomNavigation
       className={classes.footer}

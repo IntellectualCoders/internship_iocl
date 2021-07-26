@@ -1,23 +1,6 @@
 {
   "short_name": "COVID-19 Leads",
   "name": "Verified Leads for COVID-19 Resources",
-  "icons": [
-    {
-      "src": "https://img.icons8.com/bubbles/2x/coronavirus.png",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
-    },
-    {
-      "src": "https://img.icons8.com/bubbles/2x/coronavirus.png",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "https://img.icons8.com/bubbles/2x/coronavirus.png",
-      "type": "image/png",
-      "sizes": "512x512"
-    }
-  ],
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",

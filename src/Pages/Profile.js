@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useContext,useState } from 'react';
+import { AuthContext } from "../context/authContext";
 import Avatar from '@material-ui/core/Avatar';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import TextField from '@material-ui/core/TextField';
@@ -17,6 +18,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Navbar from '../Components/navbar';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import InfoIcon from '@material-ui/icons/Info';
+import Container from '../utils/loading';
 import WarningIcon from '@material-ui/icons/Warning';
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -70,21 +72,21 @@ const DarkerDisabledTextField = withStyles({
 
 function UserProfile({history}) {
   const classes = useStyles();
-  const[name,setName]= useState('Ashwani Pandhi')
-  const[designation,setDesignation]= useState('General Manager (CC, Planning & Coord)');
-  const[email,setEmail]= useState('APANDHI@INDIANOIL.IN');
-  const[phone,setPhone]= useState('9891726764');
- 
+  const {  userDetails } = useContext(AuthContext);
+  // const[name,setName]= useState(userDetails && userDetails.name?userDetails.name:'name')
+  // const[designation,setDesignation]= useState(userDetails && userDetails.designation?userDetails.designation:'designat');
+  // const[email,setEmail]= useState('APANDHI@INDIANOIL.IN');
+  // const[phone,setPhone]= useState('9891726764');
   const [open, setOpen] = React.useState(true);
 
   const handleClick = () => {
     setOpen(!open);
   };
 
-
   return (
     < div style={{minHeight:'100vh'}}>
     <Navbar history={history}/>
+    {userDetails?
       <div className={classes.paper}>
         <Typography component="h1" variant="h3">
          Employee Profile
@@ -92,7 +94,7 @@ function UserProfile({history}) {
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
           <Grid item xs={12} sm={3} >
-            <Avatar variant='rounded' alt="Remy Sharp" src="https://image.shutterstock.com/image-photo/profile-picture-smiling-millennial-asian-260nw-1836020740.jpg" className={classes.large} />
+            <Avatar variant='rounded' alt="Remy Sharp" src={userDetails.profilePic} className={classes.large} />
             </Grid>
             <Grid item xs={12} sm={9}>
             <Grid container spacing={2}>
@@ -103,7 +105,7 @@ function UserProfile({history}) {
                 fullWidth
                 id="name"
                 label="Full Name"
-                defaultValue={name}
+                value={userDetails.name}
                 disabled
               />
             </Grid>
@@ -114,7 +116,7 @@ function UserProfile({history}) {
                 fullWidth
                 id="designation"
                 label="Designation"
-                defaultValue={designation}
+                value={userDetails.designation}
                 disabled
               />
             </Grid>
@@ -125,7 +127,7 @@ function UserProfile({history}) {
                 id="email"
                 label="Email Address"
                 name="email"
-                defaultValue={email}
+                value={userDetails.email}
                 disabled
               />
             </Grid>
@@ -136,7 +138,7 @@ function UserProfile({history}) {
                 name="phone"
                 label="Phone Number"
                 id="phone"
-                defaultValue={phone}
+                value={userDetails.phoneNo}
                 disabled
               />
             </Grid>
@@ -151,7 +153,24 @@ function UserProfile({history}) {
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <ListItem className={classes.nested}>
+          {userDetails?userDetails.dependents.map((d) => {
+            var arr = d.split(";");
+            return(
+              <ListItem className={classes.nested}>
+            <ListItemIcon>
+              <FiberManualRecordIcon />
+            </ListItemIcon>
+            <ListItemText primary={arr[0]} secondary={arr[1]} />
+          </ListItem>
+            );
+
+          }):<ListItem className={classes.nested}>
+          <ListItemIcon>
+            <FiberManualRecordIcon />
+          </ListItemIcon>
+          <ListItemText primary="name" secondary="relation"/>
+        </ListItem>}
+          {/* <ListItem className={classes.nested}>
             <ListItemIcon>
               <FiberManualRecordIcon />
             </ListItemIcon>
@@ -168,7 +187,7 @@ function UserProfile({history}) {
               <FiberManualRecordIcon />
             </ListItemIcon>
             <ListItemText primary="Tanya Pandhi" secondary="Child"/>
-          </ListItem>
+          </ListItem> */}
         </List>
       </Collapse>
       </List>
@@ -178,6 +197,7 @@ function UserProfile({history}) {
           </Grid>
         </form>
       </div>
+      :<Container/>}
     <BottomNavigation
       className={classes.footer}
     >
