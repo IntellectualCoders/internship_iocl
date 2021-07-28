@@ -145,6 +145,7 @@ function Menu({history}) {
      </Grid>
         </Grid>
       </div>
+      <div style={{height:'100px'}}></div>
     <BottomNavigation
       className={classes.footer}
     >

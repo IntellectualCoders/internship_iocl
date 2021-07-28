@@ -1,4 +1,4 @@
-import React, {useEffect } from 'react';
+import React, {useEffect, useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import firebase from '../firebase';
@@ -77,6 +77,7 @@ function Login({props,history}) {
     loadCaptchaEnginge(6,'#191970','white');
   }, []);
   const [person, setPerson] = React.useState('employee');
+  const [adminESS,setAdminEss] = useState('456789')
   const [ess_no, setEss_no] = React.useState('');
   const [finalEmail, setFinalEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -104,7 +105,25 @@ function Login({props,history}) {
     console.log("in submit button");
     let user_captcha = document.getElementById('user_captcha_input').value;
 
-    if (validateCaptcha(user_captcha)=== true) {
+    if(person==='admin'){
+     if(ess_no === adminESS){
+        if (validateCaptcha(user_captcha)=== true) {
+          loadCaptchaEnginge(6); 
+          document.getElementById('user_captcha_input').value = "";
+          console.log("captcha verified");
+          login();
+      }
+  
+      else {
+          alert('Captcha Does Not Match');
+          document.getElementById('user_captcha_input').value = "";
+      }
+
+      }
+      else{alert('Request denied. User not Admin!')}
+    }
+    else {
+      if (validateCaptcha(user_captcha)=== true) {
         loadCaptchaEnginge(6); 
         document.getElementById('user_captcha_input').value = "";
         console.log("captcha verified");
@@ -115,6 +134,7 @@ function Login({props,history}) {
         alert('Captcha Does Not Match');
         document.getElementById('user_captcha_input').value = "";
     }
+    }    
     
 };
 

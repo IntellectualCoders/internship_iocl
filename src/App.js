@@ -1,4 +1,4 @@
-import React,{useContext} from "react";
+import React,{useContext, useEffect, useState} from "react";
 import { AuthContext}  from "./context/authContext";
 import "./App.css";
 import Home from "./Pages/Home";
@@ -22,9 +22,9 @@ const { currentUser } = useContext(AuthContext);
           {currentUser !== null ? 
             <BrowserRouter>
             <Switch>
-            {/* <Route exact path="/">
-              <Login />
-            </Route> */}
+            <Route exact path="/">
+              <Menu />
+            </Route>
           <Route exact path="/home">
             <Menu />
           </Route>

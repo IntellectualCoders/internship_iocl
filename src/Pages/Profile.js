@@ -1,4 +1,4 @@
-import React, { useContext,useState } from 'react';
+import React, { useContext} from 'react';
 import { AuthContext } from "../context/authContext";
 import Avatar from '@material-ui/core/Avatar';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
@@ -19,7 +19,6 @@ import Navbar from '../Components/navbar';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import InfoIcon from '@material-ui/icons/Info';
 import Container from '../utils/loading';
-import WarningIcon from '@material-ui/icons/Warning';
 const useStyles = makeStyles((theme) => ({
   paper: {
     margin: theme.spacing(8),
@@ -73,10 +72,6 @@ const DarkerDisabledTextField = withStyles({
 function UserProfile({history}) {
   const classes = useStyles();
   const {  userDetails } = useContext(AuthContext);
-  // const[name,setName]= useState(userDetails && userDetails.name?userDetails.name:'name')
-  // const[designation,setDesignation]= useState(userDetails && userDetails.designation?userDetails.designation:'designat');
-  // const[email,setEmail]= useState('APANDHI@INDIANOIL.IN');
-  // const[phone,setPhone]= useState('9891726764');
   const [open, setOpen] = React.useState(true);
 
   const handleClick = () => {
@@ -170,24 +165,6 @@ function UserProfile({history}) {
           </ListItemIcon>
           <ListItemText primary="name" secondary="relation"/>
         </ListItem>}
-          {/* <ListItem className={classes.nested}>
-            <ListItemIcon>
-              <FiberManualRecordIcon />
-            </ListItemIcon>
-            <ListItemText primary="Ritu Pandhi" secondary="Spouse"/>
-          </ListItem>
-          <ListItem className={classes.nested}>
-            <ListItemIcon>
-              <FiberManualRecordIcon />
-            </ListItemIcon>
-            <ListItemText primary="Yajwin Pandhi" secondary="Child"/>
-          </ListItem>
-          <ListItem className={classes.nested}>
-            <ListItemIcon>
-              <FiberManualRecordIcon />
-            </ListItemIcon>
-            <ListItemText primary="Tanya Pandhi" secondary="Child"/>
-          </ListItem> */}
         </List>
       </Collapse>
       </List>
@@ -198,6 +175,7 @@ function UserProfile({history}) {
         </form>
       </div>
       :<Container/>}
+      <div style={{height:'100px'}}></div>
     <BottomNavigation
       className={classes.footer}
     >

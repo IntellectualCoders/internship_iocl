@@ -94,47 +94,35 @@ class Firebase {
       });
   }
 
-  addCustomer(
+  addVaccinePatients(
+    drive,
     name,
     age,
     email,
-    phone,
-    city,
-    state,
-    postalcode,
-    lat,
-    long,
-    complete,
-    helped
+    relation,
   ) {
     const data = {
+      drive,
       name,
       age,
       email,
-      phone,
-      city,
-      state,
-      postalcode,
-      lat,
-      long,
-      complete,
-      helped,
+      relation,
       uid: new Date().getTime(),
     };
 
     // adding data here
     this.db
-      .collection("customers")
+      .collection("vaccination")
       .doc(data.uid.toString())
       .set(data)
       .then(() => {
         // NotificationManager.success("A new user has been added", "Success");
-        alert("Sucess : New Customer Added");
+        alert("Sucess : New vaccine patient Added");
         // window.location = "/";
       })
       .catch((error) => {
         // NotificationManager.error(error.message, "Create user failed");
-        alert("Failure : New Customer NOT Added" + "  " + error);
+        alert("Failure : New Vaccine Patient NOT Added" , "  " , error);
         // this.setState({ isSubmitting: false });
       });
   }

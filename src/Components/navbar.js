@@ -55,7 +55,7 @@ export default function Navbar({history}) {
           <div>
           <Button style={{float:'right'}}color="inherit" onClick={()=>{history.push("/covidLeads")}}>COVID Leads</Button>
           {/* <Button color="inherit" onClick={()=>{history.push("/vaccination")}}>Vaccination</Button> */}
-          </div>{currentUser !== null ? <Button style={{float:'right'}}color="inherit" onClick={()=>{firebase.authreturns().signOut()}}>Sign Out</Button> :<div>No User</div>}
+          </div>{currentUser !== null ? <Button style={{float:'right'}}color="inherit" onClick={()=>{firebase.authreturns().signOut()}}>Sign Out</Button> :<div></div>}
           {/* <Button color="inherit" onClick={()=>{history.push("/district")}}>District</Button> */}
           </Toolbar>
       </AppBar>

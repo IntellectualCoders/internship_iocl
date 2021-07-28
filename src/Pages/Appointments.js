@@ -214,96 +214,12 @@ function Appointment({ history }) {
                 </Grid>
               );
             })}
-            {/* <Grid item xs={12} style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
-        <Card className={classes.root}>
-      <CardContent>
-          <Grid container >
-                      <Grid item xs={12} >
-        <Typography variant="h4" color="textPrimary" component="h2">
-          Dr Anamika
-        </Typography></Grid>
-        <Grid item xs={6}>
-        <Typography variant="h6" color="textSecondry" component="h6">
-          Pediatrician
-        </Typography></Grid>
-        <Grid item xs={6}>
-        <Typography variant="body1" color="textSecondry" component="p">
-        <WatchLaterIcon style={{color:"#191970"}}/> 03-07-2020 @10:00 AM  
-        </Typography></Grid>
-        <Grid item xs={6}>
-        <Typography variant="body1" color='error' component="p">
-         Canceled by Emp  
-        </Typography></Grid>
-        <Grid item xs={6}>
-        <Typography variant="body1" color="textSecondry" component="p">
-        <PersonIcon style={{color:"#191970"}}/> Tanya Pandhi (child)   
-        </Typography></Grid>
-        </Grid>
-      </CardContent>
-    </Card>
-    </Grid>
-    <Grid item xs={12} style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
-        <Card className={classes.root}>
-      <CardContent>
-          <Grid container >
-                      <Grid item xs={12}>
-        <Typography variant="h4" color="textPrimary" component="h2">
-          Dr Anamika
-        </Typography></Grid>        
-        <Grid item xs={6}>
-        <Typography variant="h6" color="textSecondry" component="h6">
-          Pediatrician
-        </Typography></Grid>
-        <Grid item xs={6}>
-        <Typography variant="body1" color="textSecondry" component="p">
-        <WatchLaterIcon style={{color:"#191970"}}/> 03-07-2020 @10:00 AM  
-        </Typography></Grid>
-        <Grid item xs={6}>
-        <Typography variant="body1" style={{color:'#07B96C'}} component="p">
-         Open 
-        </Typography></Grid>
-        <Grid item xs={6}>
-        <Typography variant="body1" color="textSecondry" component="p">
-        <PersonIcon style={{color:"#191970"}}/> Tanya Pandhi (child)   
-        </Typography></Grid>
-        </Grid>
-      </CardContent>
-    </Card>
-    </Grid>
-    <Grid item xs={12} style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
-        <Card className={classes.root}>
-      <CardContent>
-          <Grid container >
-                      <Grid item xs={12}>
-        <Typography variant="h4" color="textPrimary" component="h2">
-          Dr Anamika
-        </Typography></Grid>
-        <Grid item xs={6}>
-        <Typography variant="h6" color="textSecondry" component="h6">
-          Pediatrician
-        </Typography></Grid>
-        <Grid item xs={6}>
-        <Typography variant="body1" color="textSecondry" component="p">
-        <WatchLaterIcon style={{color:"#191970"}}/> 03-07-2020 @10:00 AM  
-        </Typography></Grid>
-        <Grid item xs={6}>
-        <Typography variant="body1" color='textSecondary' component="p">
-         Completed  
-        </Typography></Grid>
-        <Grid item xs={6}>
-        <Typography variant="body1" color="textSecondry" component="p">
-        <PersonIcon style={{color:"#191970"}}/> Tanya Pandhi (child)   
-        </Typography></Grid>
-        </Grid>
-      </CardContent>
-    </Card>
-    </Grid> */}
           </Grid>
         </div>
       ) : (
         <Container />
       )}
-
+<div style={{height:'100px'}}></div>
       <BottomNavigation className={classes.footer}>
         <Grid>
           <Typography style={{ color: "white", marginTop: "10px" }}>

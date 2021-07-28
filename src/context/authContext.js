@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import firebase from '../firebase'
+import Container from "../utils/loading";
 
 export const AuthContext = React.createContext();
 
@@ -20,6 +21,7 @@ export const AuthProvider = ({ children }) => {
       data = querySnapshot.docs.map((doc) => doc.data());
       console.log("data: " + data[0].dependents);
       setUserDetails(data[0]);
+      setPending(false);
 
       // console.log(userdetail[0].name);
     });
@@ -27,17 +29,20 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     firebase.authreturns().onAuthStateChanged((user) => {
+      setPending(false); 
       setCurrentUser(user);
-      fetchUserDetails(user.email);      
-      setPending(false);
+      fetchUserDetails(user.email);  
+         
     });
   }, []);
 
-//   if (pending) {
-//     return <>Loading...</>;
-//   }
+  // if (pending) {
+  //   return <Container/>;
+  // }
 
   return (
+    <>
+    {pending?<Container/>:
     <AuthContext.Provider
       value={{
         currentUser,
@@ -45,6 +50,7 @@ export const AuthProvider = ({ children }) => {
       }}
     >
       {children}
-    </AuthContext.Provider>
+    </AuthContext.Provider>}
+    </>
   );
 };

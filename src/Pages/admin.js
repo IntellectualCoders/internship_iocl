@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../context/authContext";
+import firebase from "../firebase";
 import TextField from '@material-ui/core/TextField';
 import {withRouter} from 'react-router-dom';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
@@ -22,6 +24,7 @@ import Navbar from '../Components/navbar';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import InfoIcon from '@material-ui/icons/Info';
 import { Button } from '@material-ui/core';
+import Container from "../utils/loading";
 const useStyles = makeStyles((theme) => ({
     table: {
         minWidth: 700,
@@ -73,35 +76,46 @@ const useStyles = makeStyles((theme) => ({
     { label: "Age", key: "age" }
   ];
 
-  const rows = [
-    { name: "Warren Morrow", email: "sokyt@mailinator.com", age: "36" },
-    { name: "Gwendolyn Galloway", email: "weciz@mailinator.com", age: "76" },
-    { name: "Astra Wyatt", email: "quvyn@mailinator.com", age: "57" },
-    { name: "Jasmine Wong", email: "toxazoc@mailinator.com", age: "42" },
-    { name: "Brooke Mcconnell", email: "vyry@mailinator.com", age: "56" },
-    { name: "Christen Haney", email: "pagevolal@mailinator.com", age: "23" },
-    { name: "Tate Vega", email: "dycubo@mailinator.com", age: "87" },
-    { name: "Amber Brady", email: "vyconixy@mailinator.com", age: "78" },
-    { name: "Philip Whitfield", email: "velyfi@mailinator.com", age: "22" },
-    { name: "Kitra Hammond", email: "fiwiloqu@mailinator.com", age: "35" },
-    { name: "Charity Mathews", email: "fubigonero@mailinator.com", age: "63" }
-  ];
-
-  const csvReport = {
-    data: rows,
-    headers: headers,
-    filename: 'Drive1.csv'
-  };
 
 function Admin({history}) {
   const classes = useStyles();
-  const[drive,setDrive]= useState('All')
+  const { userDetails } = useContext(AuthContext);
+  const [rows,setRows] = useState(null);
+  const[drive,setDrive]= useState('drive-1');
+  const csvReport = {
+    data: rows,
+    headers: headers,
+    filename: drive+'.csv',
+  };
+
+  useEffect(()=> {
+    userDetails? fetchPatients() : console.log("");
+  }, [drive]);
+
+  useEffect(()=> {
+    userDetails? fetchPatients() : console.log("");
+  }, [userDetails]);
+    
+      const fetchPatients= async ()=>{
+        var data;
+        await firebase.db
+        .collection("vaccination")
+        .where('drive','==',drive)
+        .get()
+        .then((querySnapshot) => {
+          data = querySnapshot.docs.map((doc) => doc.data());
+          console.log("data: " + data[0]);
+          setRows(data);
+      });
+    }
+
   const handleChange = (event) => {
     setDrive(event.target.value);
   };
   return (
     <>
     <Navbar history={history}/>
+    {userDetails && rows ?
     <div style={{margin:'20px', marginBottom:'20px !important', minHeight:'100vh'}}>
         <Typography component="h1" variant="h3" style={{color:"#191970"}}>
          Upcoming Vacination Drives
@@ -118,9 +132,8 @@ function Admin({history}) {
           value={drive}
           onChange={handleChange}
         >
-            <MenuItem value="All"><em>All</em></MenuItem>
-          <MenuItem value="Pediatrician">Drive -1</MenuItem>
-          <MenuItem value="MD Physician">Drive-2</MenuItem>
+          <MenuItem value="drive-1"><em>Drive-1</em></MenuItem>
+          <MenuItem value="drive-2">Drive-2</MenuItem>
         </Select>
         </FormControl>
         </Grid>
@@ -166,6 +179,7 @@ function Admin({history}) {
       </Table>
     </TableContainer>
         </div>
+        :<Container/>}
         <div style={{height:'100px'}}></div>
 
     <BottomNavigation

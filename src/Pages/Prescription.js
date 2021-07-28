@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../context/authContext";
+import firebase from "../firebase";
 import GetAppIcon from '@material-ui/icons/GetApp';
 import Grid from '@material-ui/core/Grid';
 import PersonIcon from '@material-ui/icons/Person';
@@ -13,6 +15,7 @@ import BottomNavigation from '@material-ui/core/BottomNavigation';
 import InfoIcon from '@material-ui/icons/Info';
 import { CardActions } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
+import Container from "../utils/loading";
 const useStyles = makeStyles((theme) => ({
     paper: {
         position: 'absolute',
@@ -55,35 +58,60 @@ const useStyles = makeStyles((theme) => ({
 
 function Prescription({history}) {
   const classes = useStyles();
+  const { userDetails } = useContext(AuthContext);
+  const [prescription,setPrescription] = useState(null);
+
+  useEffect(()=> {
+    userDetails ? fetchPrescription() : console.log("");
+  }, [userDetails]);
+    
+      const fetchPrescription= async ()=>{
+        var data;
+        await firebase.db
+        .collection("appointments")
+        .where("essNo","==",userDetails.essNo)
+        .where("isprescription","==",true)
+        .get()
+        .then((querySnapshot) => {
+          data = querySnapshot.docs.map((doc) => doc.data());
+          console.log("data: " + data[0]);
+          setPrescription(data);
+      });
+    }
+
   return (
     <>
     <Navbar history={history}/>
     <div style={{margin:'20px', marginBottom:'50px', minHeight:'80vh'}}>
+      {userDetails && prescription?
     <Grid container style={{marginTop:'60px'}} >
-        <Grid xs={12}>
+       <Grid xs={12}>
         <Typography component="h1" variant="h3" style={{color:"#191970", textAlign:'center'}}>
          My Prescriptions
         </Typography>
         </Grid>
+      {prescription.map((p)=>{
+        var arr1 = p.patient.split(";");
+        return(
             <Grid item xs={12} style={{marginTop:'20px',display:'flex',alignItems:'center',justifyContent:'center',}}>
         <Card className={classes.root}>
       <CardContent>
           <Grid container >
                       <Grid item xs={6}  >
         <Typography variant="h4" color="textPrimary" component="h2">
-          Dr Anamika
+          {p.docName}
         </Typography></Grid>
         <Grid item xs={6} >
         <Typography variant="body1" color="textSecondry" component="p">
-        <WatchLaterIcon style={{color:"#191970"}}/> 03-07-2020 @10:00 AM  
+        <WatchLaterIcon style={{color:"#191970"}}/> 03-07-2020 @ {p.time}  
         </Typography></Grid>
         <Grid item xs={6}>
         <Typography variant="h6" color="textSecondry" component="h6">
-          Pediatrician
+        {p.specialization}
         </Typography></Grid>
         <Grid item xs={6}>
         <Typography variant="body1" color="textSecondry" component="p">
-        <PersonIcon style={{color:"#191970"}}/> Tanya Pandhi (child)   
+        <PersonIcon style={{color:"#191970"}}/> {arr1[0]} ({arr1[1]})  
         </Typography></Grid>
         </Grid>
       </CardContent>
@@ -94,9 +122,13 @@ function Prescription({history}) {
       </CardActions>
     </Card>
     </Grid>
-    </Grid>
-        </div>
 
+        );
+      })}
+        
+    </Grid>:<Container/>}
+        </div>
+        <div style={{height:'100px'}}></div>
     <BottomNavigation
       className={classes.footer}
     >

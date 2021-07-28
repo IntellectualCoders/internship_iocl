@@ -147,6 +147,87 @@ function Doclist({history}) {
 fetchDocList()
   },[])
 
+  const DocModal = ({doc}) =>{
+    return(
+      <Modal  open={show}
+            onClose={handleClose}>
+                <div style={modalStyle} className={classes.paper}>
+    <Typography variant="h4" color="textPrimary" component="h2" style={{textAlign:"center"}}>Book Appointment</Typography>
+            <Typography variant="h4" color="textPrimary" component="h2">
+              {doc.name}
+            </Typography> 
+            <Typography variant="h6" color="textSecondry" component="h6">
+             {doc.specialization}
+            </Typography>
+            <form className={classes.form} noValidate>
+            <Grid container >
+                <Grid item xs={12} style={{ margin:'5px'}}>
+            <FormControl  fullWidth>
+            <InputLabel id="modal-select-id">Select Patient</InputLabel>
+            <Select
+              labelId="modal-form"
+              id="modal-select-id"
+              value={patient}
+              onChange={handleChange2}
+            >
+              <MenuItem value="SELF - Ashwani Pandhi"><em>SELF - {userDetails.name}</em></MenuItem>
+              {userDetails.dependents.map((d)=>{
+                var arr = d.split(";");
+                return(
+                  <MenuItem value={d}>{arr[1]} - {arr[0]}</MenuItem>
+                )
+
+              })}
+            </Select>
+            </FormControl>
+            </Grid>
+            <Grid xs={12} style={{margin:'5px'}}>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+            fullWidth
+              margin="normal"
+              id="date-picker-dialog"
+              label="Appointment Date"
+              format="dd/mm/yyyy"
+              value={selectedDate}
+              onChange={handleDateChange}
+              KeyboardButtonProps={{
+                'aria-label': 'change date',
+              }}
+            />
+            </MuiPickersUtilsProvider>
+            </Grid>
+            </Grid>
+            <Typography variant="h4" color="textPrimary" component="h2">
+              Available Slots
+            </Typography>
+            <ButtonGroup style={{marginTop:'10px'}}size="large" color="primary" aria-label="contained primary button group">
+            <Button style={{marginRight:'10px'}} onClick={()=>setTime("10:00")}>{time === "10:00"?<AlarmOnIcon/>:" "}10:00</Button>
+            <Button style={{marginRight:'10px'}} onClick={()=>setTime("10:15")}>{time === "10:15"?<AlarmOnIcon/>:" "}10:15</Button>
+            <Button style={{marginRight:'10px'}} onClick={()=>setTime("10:30")}>{time === "10:30"?<AlarmOnIcon/>:" "}10:30</Button>
+            <Button style={{marginRight:'10px'}} onClick={()=>setTime("10:45")}>{time === "10:45"?<AlarmOnIcon/>:" "}10:45</Button>
+            <Button style={{marginRight:'10px'}} onClick={()=>setTime("11:00")}>{time === "11:00"?<AlarmOnIcon/>:" "}11:00</Button>
+            <Button style={{marginRight:'10px'}} onClick={()=>setTime("11:15")}>{time === "11:15"?<AlarmOnIcon/>:" "}11:15</Button>
+            <Button style={{marginRight:'10px'}} onClick={()=>setTime("11:30")}>{time === "11:30"?<AlarmOnIcon/>:" "}11:30</Button>
+            <Button style={{marginRight:'10px'}} onClick={()=>setTime("11:45")}>{time === "11:45"?<AlarmOnIcon/>:" "}11:45</Button>
+            <Button style={{marginRight:'10px'}} onClick={()=>setTime("12:00")}>{time === "12:00"?<AlarmOnIcon/>:" "}12:00</Button>
+            <Button style={{marginRight:'10px'}} onClick={()=>setTime("12:15")}>{time === "12:15"?<AlarmOnIcon/>:" "}12:15</Button>
+          </ButtonGroup>
+            </form>
+            <div>
+              <Button variant="contained" color="secondary" onClick={handleClose}>
+                Close
+              </Button>
+              {time?<Button variant="contained" color="primary" style={{float:'right'}} onClick={()=>addAppointment(doc)}>
+                BOOK
+              </Button>:""}
+              </div>
+              </div>
+          </Modal>
+
+    );
+  }
+
   const fetchDocList= async ()=>{
     var data;
     await firebase.db
@@ -291,87 +372,11 @@ async function addAppointment(doc) {
             <IconButton aria-label="mail">
               <MailIcon style={{color:"#191970"}} />
             </IconButton>
-            <Button variant="contained" color="primary" style={{marginLeft:'auto'}} onClick={handleShow}>
+            <Button variant="contained" color="primary" style={{marginLeft:'auto'}} onClick={()=>handleShow()}>
       Book Appointment
     </Button>
+    <DocModal doc={doc}/>
           </CardActions> 
-          <Modal  open={show}
-            onClose={handleClose}
-            aria-labelledby="simple-modal-title"
-            aria-describedby="simple-modal-description">
-                <div style={modalStyle} className={classes.paper}>
-    <Typography variant="h4" color="textPrimary" component="h2" style={{textAlign:"center"}}>Book Appointment</Typography>
-            <Typography variant="h4" color="textPrimary" component="h2">
-              {doc.name}
-            </Typography> 
-            <Typography variant="h6" color="textSecondry" component="h6">
-             {doc.specialization}
-            </Typography>
-            <form className={classes.form} noValidate>
-            <Grid container >
-                <Grid item xs={12} style={{ margin:'5px'}}>
-            <FormControl  fullWidth>
-            <InputLabel id="modal-select-id">Select Patient</InputLabel>
-            <Select
-              labelId="modal-form"
-              id="modal-select-id"
-              value={patient}
-              onChange={handleChange2}
-            >
-              <MenuItem value="SELF - Ashwani Pandhi"><em>SELF - {userDetails.name}</em></MenuItem>
-              {userDetails.dependents.map((d)=>{
-                var arr = d.split(";");
-                return(
-                  <MenuItem value={d}>{arr[1]} - {arr[0]}</MenuItem>
-                )
-
-              })}
-            </Select>
-            </FormControl>
-            </Grid>
-            <Grid xs={12} style={{margin:'5px'}}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <KeyboardDatePicker
-            fullWidth
-              margin="normal"
-              id="date-picker-dialog"
-              label="Appointment Date"
-              format="dd/mm/yyyy"
-              value={selectedDate}
-              onChange={handleDateChange}
-              KeyboardButtonProps={{
-                'aria-label': 'change date',
-              }}
-            />
-            </MuiPickersUtilsProvider>
-            </Grid>
-            </Grid>
-            <Typography variant="h4" color="textPrimary" component="h2">
-              Available Slots
-            </Typography>
-            <ButtonGroup style={{marginTop:'10px'}}size="large" color="primary" aria-label="contained primary button group">
-            <Button style={{marginRight:'10px'}} onClick={()=>setTime("10:00")}>{time === "10:00"?<AlarmOnIcon/>:" "}10:00</Button>
-            <Button style={{marginRight:'10px'}} onClick={()=>setTime("10:15")}>{time === "10:15"?<AlarmOnIcon/>:" "}10:15</Button>
-            <Button style={{marginRight:'10px'}} onClick={()=>setTime("10:30")}>{time === "10:30"?<AlarmOnIcon/>:" "}10:30</Button>
-            <Button style={{marginRight:'10px'}} onClick={()=>setTime("10:45")}>{time === "10:45"?<AlarmOnIcon/>:" "}10:45</Button>
-            <Button style={{marginRight:'10px'}} onClick={()=>setTime("11:00")}>{time === "11:00"?<AlarmOnIcon/>:" "}11:00</Button>
-            <Button style={{marginRight:'10px'}} onClick={()=>setTime("11:15")}>{time === "11:15"?<AlarmOnIcon/>:" "}11:15</Button>
-            <Button style={{marginRight:'10px'}} onClick={()=>setTime("11:30")}>{time === "11:30"?<AlarmOnIcon/>:" "}11:30</Button>
-            <Button style={{marginRight:'10px'}} onClick={()=>setTime("11:45")}>{time === "11:45"?<AlarmOnIcon/>:" "}11:45</Button>
-            <Button style={{marginRight:'10px'}} onClick={()=>setTime("12:00")}>{time === "12:00"?<AlarmOnIcon/>:" "}12:00</Button>
-            <Button style={{marginRight:'10px'}} onClick={()=>setTime("12:15")}>{time === "12:15"?<AlarmOnIcon/>:" "}12:15</Button>
-          </ButtonGroup>
-            </form>
-            <div>
-              <Button variant="contained" color="secondary" onClick={handleClose}>
-                Close
-              </Button>
-              {time?<Button variant="contained" color="primary" style={{float:'right'}} onClick={()=>addAppointment(doc)}>
-                BOOK
-              </Button>:""}
-              </div>
-              </div>
-          </Modal>
         </Card>
         </Grid>
           );
@@ -380,7 +385,7 @@ async function addAppointment(doc) {
         </div>
         :<Container/>
         }
-
+<div style={{height:'100px'}}></div>
     <BottomNavigation
       className={classes.footer}
     >

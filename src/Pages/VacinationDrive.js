@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import firebase from "../firebase";
 import Button from '@material-ui/core/Button';
 import Modal from '@material-ui/core/Modal';
 import TextField from '@material-ui/core/TextField';
@@ -82,18 +83,6 @@ function getModalStyle() {
     };
   }
 
-// const DarkerDisabledTextField = withStyles({
-//     root: {
-//       "& .MuiInputBase-root.Mui-disabled": {
-//         color: "rgba(25, 25, 112, 1)" ,// (default alpha is 0.38),
-//         fontWeight:'bold',
-//         fontSize:'20px'
-//       }
-//     }
-//   })(TextField);
-  
-
-
 function VaccinationDrive({history}) {
   const classes = useStyles();
   const[name,setName]= useState('')
@@ -124,6 +113,27 @@ function VaccinationDrive({history}) {
   const handleChange2 = (event) => {
     setpatient(event.target.value);
   };
+
+  async function addVaccinePatient(drive) {
+    console.log('inside book fn');
+    try {
+      await firebase.addVaccinePatients(
+    //     essNo,
+    // name,
+    // age,
+    // email,
+    // relation,
+        drive,
+        name,
+        age,
+        email,
+        patient,
+      ); 
+      console.log('added data to database');
+      handleClose();
+    } catch (error) {
+      alert(error.message);
+    }}
 
 
   return (
@@ -251,7 +261,7 @@ function VaccinationDrive({history}) {
           <Button variant="contained" color="secondary" onClick={handleClose}>
             Close
           </Button>
-          {name || age || patient?<Button variant="contained" color="primary" style={{float:'right'}} onClick={handleClose}>
+          {name || age || patient?<Button variant="contained" color="primary" style={{float:'right'}} onClick={() => addVaccinePatient('drive-1')}>
             BOOK
           </Button>:""}
           </div>
@@ -355,7 +365,7 @@ function VaccinationDrive({history}) {
           <MenuItem value="CHILD - Tanya Pandhi">CHILD - Tanya Pandhi</MenuItem>
           <MenuItem value="CHILD - Yajwin Pandhi">CHILD - Yajwin Pandhi</MenuItem>
           <MenuItem value="SPOUSE - Ritu Pandhi">SPOUSE - Ritu Pandhi</MenuItem>
-          <MenuItem value="SPOUSE - Ritu Pandhi">other</MenuItem>
+          <MenuItem value="other">other</MenuItem>
         </Select>
         </FormControl>
         </Grid>
@@ -366,7 +376,7 @@ function VaccinationDrive({history}) {
           <Button variant="contained" color="secondary" onClick={handleClose2}>
             Close
           </Button>
-          {name || age || patient?<Button variant="contained" color="primary" style={{float:'right'}} onClick={handleClose2}>
+          {name || age || patient?<Button variant="contained" color="primary" style={{float:'right'}} onClick={() => addVaccinePatient('drive-2')}>
             BOOK
           </Button>:""}
           </div>
@@ -377,7 +387,7 @@ function VaccinationDrive({history}) {
     
     </Grid>
         </div>
-
+        <div style={{height:'100px'}}></div>
     <BottomNavigation
       className={classes.footer}
     >
